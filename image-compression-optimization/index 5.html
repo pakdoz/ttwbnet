@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="id-ID">
+<head>
+<meta charset="UTF-8">
+<script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script><script>class RocketLazyLoadScripts{constructor(e){this.triggerEvents=e,this.eventOptions={passive:!0},this.userEventListener=this.triggerListener.bind(this),this.delayedScripts={normal:[],async:[],defer:[]},this.allJQueries=[]}_addUserInteractionListener(e){this.triggerEvents.forEach((t=>window.addEventListener(t,e.userEventListener,e.eventOptions)))}_removeUserInteractionListener(e){this.triggerEvents.forEach((t=>window.removeEventListener(t,e.userEventListener,e.eventOptions)))}triggerListener(){this._removeUserInteractionListener(this),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",this._loadEverythingNow.bind(this)):this._loadEverythingNow()}async _loadEverythingNow(){this._delayEventListeners(),this._delayJQueryReady(this),this._handleDocumentWrite(),this._registerAllDelayedScripts(),this._preloadAllScripts(),await this._loadScriptsFromList(this.delayedScripts.normal),await this._loadScriptsFromList(this.delayedScripts.defer),await this._loadScriptsFromList(this.delayedScripts.async),await this._triggerDOMContentLoaded(),await this._triggerWindowLoad(),window.dispatchEvent(new Event("rocket-allScriptsLoaded"))}_registerAllDelayedScripts(){document.querySelectorAll("script[type=rocketlazyloadscript]").forEach((e=>{e.hasAttribute("src")?e.hasAttribute("async")&&!1!==e.async?this.delayedScripts.async.push(e):e.hasAttribute("defer")&&!1!==e.defer||"module"===e.getAttribute("data-rocket-type")?this.delayedScripts.defer.push(e):this.delayedScripts.normal.push(e):this.delayedScripts.normal.push(e)}))}async _transformScript(e){return await this._requestAnimFrame(),new Promise((t=>{const n=document.createElement("script");let r;[...e.attributes].forEach((e=>{let t=e.nodeName;"type"!==t&&("data-rocket-type"===t&&(t="type",r=e.nodeValue),n.setAttribute(t,e.nodeValue))})),e.hasAttribute("src")?(n.addEventListener("load",t),n.addEventListener("error",t)):(n.text=e.text,t()),e.parentNode.replaceChild(n,e)}))}async _loadScriptsFromList(e){const t=e.shift();return t?(await this._transformScript(t),this._loadScriptsFromList(e)):Promise.resolve()}_preloadAllScripts(){var e=document.createDocumentFragment();[...this.delayedScripts.normal,...this.delayedScripts.defer,...this.delayedScripts.async].forEach((t=>{const n=t.getAttribute("src");if(n){const t=document.createElement("link");t.href=n,t.rel="preload",t.as="script",e.appendChild(t)}})),document.head.appendChild(e)}_delayEventListeners(){let e={};function t(t,n){!function(t){function n(n){return e[t].eventsToRewrite.indexOf(n)>=0?"rocket-"+n:n}e[t]||(e[t]={originalFunctions:{add:t.addEventListener,remove:t.removeEventListener},eventsToRewrite:[]},t.addEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.add.apply(t,arguments)},t.removeEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.remove.apply(t,arguments)})}(t),e[t].eventsToRewrite.push(n)}function n(e,t){let n=e[t];Object.defineProperty(e,t,{get:()=>n||function(){},set(r){e["rocket"+t]=n=r}})}t(document,"DOMContentLoaded"),t(window,"DOMContentLoaded"),t(window,"load"),t(window,"pageshow"),t(document,"readystatechange"),n(document,"onreadystatechange"),n(window,"onload"),n(window,"onpageshow")}_delayJQueryReady(e){let t=window.jQuery;Object.defineProperty(window,"jQuery",{get:()=>t,set(n){if(n&&n.fn&&!e.allJQueries.includes(n)){n.fn.ready=n.fn.init.prototype.ready=function(t){e.domReadyFired?t.bind(document)(n):document.addEventListener("rocket-DOMContentLoaded",(()=>t.bind(document)(n)))};const t=n.fn.on;n.fn.on=n.fn.init.prototype.on=function(){if(this[0]===window){function e(e){return e.split(" ").map((e=>"load"===e||0===e.indexOf("load.")?"rocket-jquery-load":e)).join(" ")}"string"==typeof arguments[0]||arguments[0]instanceof String?arguments[0]=e(arguments[0]):"object"==typeof arguments[0]&&Object.keys(arguments[0]).forEach((t=>{delete Object.assign(arguments[0],{[e(t)]:arguments[0][t]})[t]}))}return t.apply(this,arguments),this},e.allJQueries.push(n)}t=n}})}async _triggerDOMContentLoaded(){this.domReadyFired=!0,await this._requestAnimFrame(),document.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._requestAnimFrame(),window.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._requestAnimFrame(),document.dispatchEvent(new Event("rocket-readystatechange")),await this._requestAnimFrame(),document.rocketonreadystatechange&&document.rocketonreadystatechange()}async _triggerWindowLoad(){await this._requestAnimFrame(),window.dispatchEvent(new Event("rocket-load")),await this._requestAnimFrame(),window.rocketonload&&window.rocketonload(),await this._requestAnimFrame(),this.allJQueries.forEach((e=>e(window).trigger("rocket-jquery-load"))),window.dispatchEvent(new Event("rocket-pageshow")),await this._requestAnimFrame(),window.rocketonpageshow&&window.rocketonpageshow()}_handleDocumentWrite(){const e=new Map;document.write=document.writeln=function(t){const n=document.currentScript,r=document.createRange(),i=n.parentElement;let o=e.get(n);void 0===o&&(o=n.nextSibling,e.set(n,o));const a=document.createDocumentFragment();r.setStart(a,0),a.appendChild(r.createContextualFragment(t)),i.insertBefore(a,o)}}async _requestAnimFrame(){return new Promise((e=>requestAnimationFrame(e)))}static run(){const e=new RocketLazyLoadScripts(["keydown","mousemove","touchmove","touchstart","touchend","wheel"]);e._addUserInteractionListener(e)}}RocketLazyLoadScripts.run();</script>
+	
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+	<!-- This site is optimized with the Yoast SEO plugin v17.6 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Image Compression &amp; Optimization &bull; Powered by Cloudfront &bull; TataWeb</title>
+<style id="rocket-critical-css">.menu-item-object-language_switcher .trp-flag-image{display:inline-block;margin:-1px 5px;vertical-align:baseline;padding:0;border:0;border-radius:0}html{line-height:1.15;-webkit-text-size-adjust:100%}*,:after,:before{-webkit-box-sizing:border-box;box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif;font-size:1rem;font-weight:400;line-height:1.5;color:#333;background-color:#fff;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}h1,h2,h3{margin-top:.5rem;margin-bottom:1rem;font-family:inherit;font-weight:500;line-height:1.2;color:inherit}h1{font-size:2.5rem}h2{font-size:2rem}h3{font-size:1.75rem}a{background-color:transparent;text-decoration:none;color:#c36}img{border-style:none;height:auto;max-width:100%}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}li,ul{margin-top:0;margin-bottom:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}.site-navigation{grid-area:nav-menu;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1}.elementor-screen-only{position:absolute;top:-10000em;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);border:0}.elementor{-webkit-hyphens:manual;-ms-hyphens:manual;hyphens:manual}.elementor *,.elementor :after,.elementor :before{-webkit-box-sizing:border-box;box-sizing:border-box}.elementor a{-webkit-box-shadow:none;box-shadow:none;text-decoration:none}.elementor img{height:auto;max-width:100%;border:none;-webkit-border-radius:0;border-radius:0;-webkit-box-shadow:none;box-shadow:none}.elementor .elementor-background-overlay{height:100%;width:100%;top:0;left:0;position:absolute}.elementor-widget-wrap .elementor-element.elementor-widget__width-auto{max-width:100%}.elementor-align-right{text-align:right}.elementor-align-right .elementor-button{width:auto}@media (max-width:1024px){.elementor-tablet-align-right{text-align:right}.elementor-tablet-align-right .elementor-button{width:auto}}:root{--page-title-display:block}.elementor-section{position:relative}.elementor-section .elementor-container{display:-webkit-box;display:-ms-flexbox;display:flex;margin-right:auto;margin-left:auto;position:relative}@media (max-width:1024px){.elementor-section .elementor-container{-ms-flex-wrap:wrap;flex-wrap:wrap}}.elementor-section.elementor-section-boxed>.elementor-container{max-width:1140px}.elementor-section.elementor-section-items-middle>.elementor-container{-webkit-box-align:center;-ms-flex-align:center;align-items:center}.elementor-widget-wrap{position:relative;width:100%;-ms-flex-wrap:wrap;flex-wrap:wrap;-ms-flex-line-pack:start;align-content:flex-start}.elementor:not(.elementor-bc-flex-widget) .elementor-widget-wrap{display:-webkit-box;display:-ms-flexbox;display:flex}.elementor-widget-wrap>.elementor-element{width:100%}.elementor-widget{position:relative}.elementor-widget:not(:last-child){margin-bottom:20px}.elementor-column{min-height:1px}.elementor-column{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex}.elementor-column-gap-default>.elementor-column>.elementor-element-populated{padding:10px}@media (min-width:768px){.elementor-column.elementor-col-33{width:33.333%}.elementor-column.elementor-col-100{width:100%}}@media (max-width:767px){.elementor-column{width:100%}}@media (min-width:1025px){#elementor-device-mode:after{content:"desktop"}}@media (min-width:-1px){#elementor-device-mode:after{content:"widescreen"}}@media (max-width:-1px){#elementor-device-mode:after{content:"laptop";content:"tablet_extra"}}@media (max-width:1024px){#elementor-device-mode:after{content:"tablet"}}@media (max-width:-1px){#elementor-device-mode:after{content:"mobile_extra"}}@media (max-width:767px){#elementor-device-mode:after{content:"mobile"}}[class^=eicon]{display:inline-block;font-family:eicons;font-size:inherit;font-weight:400;font-style:normal;font-variant:normal;line-height:1;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.eicon-menu-bar:before{content:"\e816"}.elementor-button{display:inline-block;line-height:1;background-color:#818a91;font-size:15px;padding:12px 24px;-webkit-border-radius:3px;border-radius:3px;color:#fff;fill:#fff;text-align:center}.elementor-button:visited{color:#fff}.elementor-button-content-wrapper{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.elementor-button-text{-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;-webkit-box-ordinal-group:11;-ms-flex-order:10;order:10;display:inline-block}.elementor-button span{text-decoration:inherit}.elementor-shape{overflow:hidden;position:absolute;left:0;width:100%;line-height:0;direction:ltr}.elementor-shape-bottom{bottom:-1px}.elementor-shape svg{display:block;width:calc(100% + 1.3px);position:relative;left:50%;-webkit-transform:translateX(-50%);-ms-transform:translateX(-50%);transform:translateX(-50%)}.elementor-shape .elementor-shape-fill{fill:#fff;-webkit-transform-origin:center;-ms-transform-origin:center;transform-origin:center;-webkit-transform:rotateY(0deg);transform:rotateY(0deg)}@media (max-width:767px){.elementor .elementor-hidden-mobile{display:none}}.elementor-kit-144{--e-global-color-primary:#6EC1E4;--e-global-color-secondary:#54595F;--e-global-color-text:#7A7A7A;--e-global-color-accent:#61CE70;--e-global-color-411421d:#221E5B;--e-global-color-a9891d1:#040037;--e-global-color-862f078:#EB4E1C;--e-global-color-758a3ba:#D2D2D2;--e-global-color-66f019a:#F8F9FA26;--e-global-typography-primary-font-family:"Montserrat";--e-global-typography-primary-font-weight:900;--e-global-typography-primary-text-transform:uppercase;--e-global-typography-secondary-font-family:"Montserrat";--e-global-typography-secondary-font-weight:800;--e-global-typography-text-font-family:"Roboto";--e-global-typography-text-font-weight:400;--e-global-typography-accent-font-family:"Roboto";--e-global-typography-accent-font-weight:500}.elementor-section.elementor-section-boxed>.elementor-container{max-width:1140px}.elementor-widget:not(:last-child){margin-bottom:20px}@media (max-width:1024px){.elementor-section.elementor-section-boxed>.elementor-container{max-width:1024px}}@media (max-width:767px){.elementor-section.elementor-section-boxed>.elementor-container{max-width:767px}}.elementor-location-header:before{content:"";display:table;clear:both}.elementor-4167 .elementor-element.elementor-element-f4a9c0b>.elementor-container{min-height:100vh}.elementor-4167 .elementor-element.elementor-element-f4a9c0b:not(.elementor-motion-effects-element-type-background){background-color:#10768C}.elementor-4167 .elementor-element.elementor-element-f4a9c0b>.elementor-background-overlay{background-image:url("https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/2021/05/frontbg-768px.jpg");background-position:center center;background-repeat:no-repeat;background-size:cover;opacity:1;mix-blend-mode:multiply}.elementor-4167 .elementor-element.elementor-element-f4a9c0b{margin-top:0px;margin-bottom:0px;padding:25px 0px 0px 0px}.elementor-4167 .elementor-element.elementor-element-f4a9c0b>.elementor-shape-bottom .elementor-shape-fill{fill:var(--e-global-color-862f078)}.elementor-4167 .elementor-element.elementor-element-f4a9c0b>.elementor-shape-bottom svg{height:188px;transform:translateX(-50%) rotateY(180deg)}.elementor-4167 .elementor-element.elementor-element-cd496e0:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap{background-image:url("https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/2021/10/rocket-v2.png");background-position:bottom center;background-repeat:no-repeat;background-size:270px auto}.elementor-4167 .elementor-element.elementor-element-cd496e0>.elementor-element-populated{padding:0px 0px 0px 0px}.elementor-4167 .elementor-element.elementor-element-4e5c5a6{z-index:1}.elementor-4167 .elementor-element.elementor-element-249fb16{text-align:center;z-index:0}.elementor-4167 .elementor-element.elementor-element-249fb16 .elementor-heading-title{color:#FBFBFB;font-family:"Montserrat",Sans-serif;font-size:45px;font-weight:900;text-transform:uppercase;line-height:1.3em;letter-spacing:-2px;text-shadow:0px 0px 10px #000000}.elementor-4167 .elementor-element.elementor-element-249fb16>.elementor-widget-container{margin:-40px 0px 0px 0px}.elementor-4167 .elementor-element.elementor-element-af3c284{text-align:center}.elementor-4167 .elementor-element.elementor-element-af3c284 .elementor-heading-title{color:#FFFFFF;font-family:"Roboto",Sans-serif;font-size:20px;font-weight:400;line-height:1.6em}.elementor-4167 .elementor-element.elementor-element-af3c284>.elementor-widget-container{padding:0px 200px 0px 200px}.elementor-4167 .elementor-element.elementor-element-8e0316b{text-align:center}.elementor-4167 .elementor-element.elementor-element-8e0316b .elementor-heading-title{color:#FFFFFF;font-family:"Roboto",Sans-serif;font-size:20px;font-weight:400;line-height:1.6em}.elementor-4167 .elementor-element.elementor-element-8e0316b>.elementor-widget-container{padding:0px 200px 0px 200px}.elementor-4167 .elementor-element.elementor-element-3564d2b .elementor-spacer-inner{height:300px}@media (max-width:1024px){.elementor-4167 .elementor-element.elementor-element-f4a9c0b>.elementor-shape-bottom svg{height:170px}.elementor-4167 .elementor-element.elementor-element-cd496e0:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap{background-size:234px auto}.elementor-4167 .elementor-element.elementor-element-249fb16{text-align:center}.elementor-4167 .elementor-element.elementor-element-249fb16 .elementor-heading-title{font-size:40px;letter-spacing:-2px}.elementor-4167 .elementor-element.elementor-element-af3c284>.elementor-widget-container{padding:0px 100px 0px 100px}.elementor-4167 .elementor-element.elementor-element-8e0316b>.elementor-widget-container{padding:0px 100px 0px 100px}.elementor-4167 .elementor-element.elementor-element-3564d2b .elementor-spacer-inner{height:226px}}@media (max-width:767px){.elementor-4167 .elementor-element.elementor-element-f4a9c0b>.elementor-shape-bottom svg{height:125px}.elementor-4167 .elementor-element.elementor-element-f4a9c0b{padding:55px 0px 0px 0px}.elementor-4167 .elementor-element.elementor-element-cd496e0:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap{background-size:177px auto}.elementor-4167 .elementor-element.elementor-element-cd496e0>.elementor-element-populated{padding:0px 15px 50px 15px}.elementor-4167 .elementor-element.elementor-element-4e5c5a6{text-align:center}.elementor-4167 .elementor-element.elementor-element-249fb16{text-align:center}.elementor-4167 .elementor-element.elementor-element-249fb16 .elementor-heading-title{font-size:25px;line-height:1.4em}.elementor-4167 .elementor-element.elementor-element-af3c284 .elementor-heading-title{font-size:17px}.elementor-4167 .elementor-element.elementor-element-af3c284>.elementor-widget-container{padding:0px 0px 0px 0px}.elementor-4167 .elementor-element.elementor-element-8e0316b .elementor-heading-title{font-size:17px}.elementor-4167 .elementor-element.elementor-element-8e0316b>.elementor-widget-container{padding:0px 0px 0px 0px}.elementor-4167 .elementor-element.elementor-element-3564d2b .elementor-spacer-inner{height:113px}}.elementor-2607 .elementor-element.elementor-element-41a1cb20>.elementor-container{min-height:80px}.elementor-2607 .elementor-element.elementor-element-41a1cb20>.elementor-container>.elementor-column>.elementor-widget-wrap{align-content:center;align-items:center}.elementor-2607 .elementor-element.elementor-element-41a1cb20{margin-top:0px;margin-bottom:-80px;padding:0% 0% 0% 0%;z-index:9995}.elementor-2607 .elementor-element.elementor-element-28b1ca2b{text-align:center}.elementor-2607 .elementor-element.elementor-element-2cb3f41a.elementor-column>.elementor-widget-wrap{justify-content:flex-end}.elementor-2607 .elementor-element.elementor-element-5cf4130 .elementor-menu-toggle{margin-left:auto;background-color:#FFFFFF00;border-width:0px;border-radius:0px}.elementor-2607 .elementor-element.elementor-element-5cf4130 .elementor-nav-menu .elementor-item{font-family:"Montserrat",Sans-serif;font-size:16px;font-weight:800;text-transform:uppercase;font-style:normal;text-decoration:none;line-height:24px;letter-spacing:-0.45px}.elementor-2607 .elementor-element.elementor-element-5cf4130 .elementor-nav-menu--main .elementor-item{color:#FFFFFF;fill:#FFFFFF;padding-left:10px;padding-right:10px;padding-top:4px;padding-bottom:4px}body:not(.rtl) .elementor-2607 .elementor-element.elementor-element-5cf4130 .elementor-nav-menu--layout-horizontal .elementor-nav-menu>li:not(:last-child){margin-right:40px}.elementor-2607 .elementor-element.elementor-element-5cf4130 .elementor-nav-menu--dropdown{background-color:#FFFFFF}.elementor-2607 .elementor-element.elementor-element-5cf4130 .elementor-nav-menu--dropdown .elementor-item,.elementor-2607 .elementor-element.elementor-element-5cf4130 .elementor-nav-menu--dropdown .elementor-sub-item{font-size:14px;font-weight:bold;font-style:normal;text-decoration:none;letter-spacing:1.53px}.elementor-2607 .elementor-element.elementor-element-5cf4130 div.elementor-menu-toggle{color:#FFFFFF}.elementor-2607 .elementor-element.elementor-element-5cf4130{width:auto;max-width:auto}.elementor-2607 .elementor-element.elementor-element-2aaa994>.elementor-element-populated{text-align:right}.elementor-2607 .elementor-element.elementor-element-24dca8fa .elementor-button{font-family:"Montserrat",Sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;font-style:normal;text-decoration:none;line-height:1.3em;letter-spacing:1.53px;fill:#FFFFFF;color:#FFFFFF;background-color:#EB4E1C;border-radius:0px 0px 0px 0px;padding:12px 17px 12px 17px}.elementor-2607 .elementor-element.elementor-element-24dca8fa>.elementor-widget-container{margin:0px 0px 0px 0px}.elementor-2607 .elementor-element.elementor-element-24dca8fa{width:auto;max-width:auto}@media (max-width:1024px){.elementor-2607 .elementor-element.elementor-element-28b1ca2b img{width:75%}.elementor-2607 .elementor-element.elementor-element-5cf4130 .elementor-nav-menu--main>.elementor-nav-menu>li>.elementor-nav-menu--dropdown,.elementor-2607 .elementor-element.elementor-element-5cf4130 .elementor-nav-menu__container.elementor-nav-menu--dropdown{margin-top:22px!important}.elementor-2607 .elementor-element.elementor-element-5cf4130 .elementor-menu-toggle{border-width:1px;border-radius:0px}.elementor-2607 .elementor-element.elementor-element-24dca8fa .elementor-button{font-size:15px}}@media (min-width:768px){.elementor-2607 .elementor-element.elementor-element-7c289597{width:20%}.elementor-2607 .elementor-element.elementor-element-2cb3f41a{width:66.332%}.elementor-2607 .elementor-element.elementor-element-2aaa994{width:13%}}@media (max-width:1024px) and (min-width:768px){.elementor-2607 .elementor-element.elementor-element-7c289597{width:50%}.elementor-2607 .elementor-element.elementor-element-2cb3f41a{width:25%}.elementor-2607 .elementor-element.elementor-element-2aaa994{width:25%}}@media (max-width:767px){.elementor-2607 .elementor-element.elementor-element-7c289597{width:45%}.elementor-2607 .elementor-element.elementor-element-28b1ca2b{text-align:center}.elementor-2607 .elementor-element.elementor-element-28b1ca2b img{width:100%}.elementor-2607 .elementor-element.elementor-element-2cb3f41a{width:17%}.elementor-2607 .elementor-element.elementor-element-2aaa994{width:38%}.elementor-2607 .elementor-element.elementor-element-24dca8fa .elementor-button{font-size:12px;padding:10px 10px 10px 10px}.elementor-2607 .elementor-element.elementor-element-24dca8fa>.elementor-widget-container{margin:0px 0px 0px 0px}}.elementor-item:after,.elementor-item:before{display:block;position:absolute}.elementor-item:not(:hover):not(:focus):not(.elementor-item-active):not(.highlighted):after,.elementor-item:not(:hover):not(:focus):not(.elementor-item-active):not(.highlighted):before{opacity:0}.elementor-nav-menu--main .elementor-nav-menu a{padding:13px 20px}.elementor-nav-menu--main .elementor-nav-menu ul{position:absolute;width:12em;border-width:0;border-style:solid;padding:0}.elementor-nav-menu--main .elementor-nav-menu--dropdown .sub-arrow .e-font-icon-svg{height:1em;width:1em}.elementor-nav-menu--layout-horizontal{display:-webkit-box;display:-ms-flexbox;display:flex}.elementor-nav-menu--layout-horizontal .elementor-nav-menu{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap}.elementor-nav-menu--layout-horizontal .elementor-nav-menu a{white-space:nowrap}.elementor-nav-menu__align-right .elementor-nav-menu{margin-left:auto}.elementor-nav-menu__align-right .elementor-nav-menu{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end}.elementor-widget-nav-menu .elementor-widget-container{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.elementor-nav-menu{position:relative;z-index:2}.elementor-nav-menu:after{content:"\00a0";display:block;height:0;font:0/0 serif;clear:both;visibility:hidden;overflow:hidden}.elementor-nav-menu,.elementor-nav-menu li,.elementor-nav-menu ul{display:block;list-style:none;margin:0;padding:0;line-height:normal}.elementor-nav-menu ul{display:none}.elementor-nav-menu ul ul a{border-left:16px solid transparent}.elementor-nav-menu a,.elementor-nav-menu li{position:relative}.elementor-nav-menu li{border-width:0}.elementor-nav-menu a{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.elementor-nav-menu a{padding:10px 20px;line-height:20px}.elementor-nav-menu .sub-arrow{line-height:1;padding:10px 0 10px 10px;margin-top:-10px;margin-bottom:-10px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.elementor-nav-menu .sub-arrow .e-font-icon-svg{height:1em;width:1em}.elementor-menu-toggle{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;font-size:22px;padding:.25em;border:0 solid;border-radius:3px;background-color:rgba(0,0,0,.05);color:#494c4f}.elementor-nav-menu--dropdown{background-color:#fff;font-size:13px}.elementor-nav-menu--dropdown.elementor-nav-menu__container{margin-top:10px;-webkit-transform-origin:top;-ms-transform-origin:top;transform-origin:top;overflow:auto}.elementor-nav-menu--dropdown.elementor-nav-menu__container .elementor-sub-item{font-size:.85em}.elementor-nav-menu--dropdown a{color:#494c4f}ul.elementor-nav-menu--dropdown a{text-shadow:none;border-left:8px solid transparent}.elementor-nav-menu__text-align-center .elementor-nav-menu--dropdown .elementor-nav-menu a{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.elementor-nav-menu--toggle .elementor-menu-toggle:not(.elementor-active)+.elementor-nav-menu__container{-webkit-transform:scaleY(0);-ms-transform:scaleY(0);transform:scaleY(0);max-height:0}.elementor-nav-menu--stretch .elementor-nav-menu__container.elementor-nav-menu--dropdown{position:absolute;z-index:9997}@media (min-width:1025px){.elementor-nav-menu--dropdown-tablet .elementor-menu-toggle,.elementor-nav-menu--dropdown-tablet .elementor-nav-menu--dropdown{display:none}}@media (max-width:1024px){.elementor-nav-menu--dropdown-tablet .elementor-nav-menu--main{display:none}}</style>
+	<meta name="description" content="Layanan Image Compression &amp; Optimization ini akan membantu melakukan kompresi &amp; optimisasi gambar pada website, sehingga mempercepat loading.">
+	<link rel="canonical" href="https://www.tataweb.net/image-compression-optimization/">
+	<meta property="og:locale" content="id_ID">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="Image Compression &amp; Optimization &bull; Powered by Cloudfront &bull; TataWeb">
+	<meta property="og:description" content="Layanan Image Compression &amp; Optimization ini akan membantu melakukan kompresi &amp; optimisasi gambar pada website, sehingga mempercepat loading.">
+	<meta property="og:url" content="https://www.tataweb.net/image-compression-optimization/">
+	<meta property="og:site_name" content="TataWeb">
+	<meta property="article:modified_time" content="2021-09-10T03:00:42+00:00">
+	<meta property="og:image" content="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/astronot-image-pcd9a7wyxhx6u2hah40d42ace0r47osaq6l2lr8hjw.png">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:label1" content="Estimasi waktu membaca">
+	<meta name="twitter:data1" content="2 menit">
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.tataweb.net/#organization","name":"TataWeb","url":"https://www.tataweb.net/","sameAs":[],"logo":{"@type":"ImageObject","@id":"https://www.tataweb.net/#logo","inLanguage":"id-ID","url":"https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/2020/12/logo-tataweb.png","contentUrl":"https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/2020/12/logo-tataweb.png","width":405,"height":100,"caption":"TataWeb"},"image":{"@id":"https://www.tataweb.net/#logo"}},{"@type":"WebSite","@id":"https://www.tataweb.net/#website","url":"https://www.tataweb.net/","name":"TataWeb","description":"Jasa Web Design Surabaya","publisher":{"@id":"https://www.tataweb.net/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.tataweb.net/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"id-ID"},{"@type":"ImageObject","@id":"https://www.tataweb.net/image-compression-optimization/#primaryimage","inLanguage":"id-ID","url":"https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/astronot-image-pcd9a7wyxhx6u2hah40d42ace0r47osaq6l2lr8hjw.png","contentUrl":"https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/astronot-image-pcd9a7wyxhx6u2hah40d42ace0r47osaq6l2lr8hjw.png"},{"@type":"WebPage","@id":"https://www.tataweb.net/image-compression-optimization/#webpage","url":"https://www.tataweb.net/image-compression-optimization/","name":"Image Compression & Optimization &bull; Powered by Cloudfront &bull; TataWeb","isPartOf":{"@id":"https://www.tataweb.net/#website"},"primaryImageOfPage":{"@id":"https://www.tataweb.net/image-compression-optimization/#primaryimage"},"datePublished":"2021-08-30T06:37:38+00:00","dateModified":"2021-09-10T03:00:42+00:00","description":"Layanan Image Compression & Optimization ini akan membantu melakukan kompresi & optimisasi gambar pada website, sehingga mempercepat loading.","breadcrumb":{"@id":"https://www.tataweb.net/image-compression-optimization/#breadcrumb"},"inLanguage":"id-ID","potentialAction":[{"@type":"ReadAction","target":["https://www.tataweb.net/image-compression-optimization/"]}]},{"@type":"BreadcrumbList","@id":"https://www.tataweb.net/image-compression-optimization/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.tataweb.net/"},{"@type":"ListItem","position":2,"name":"Image Compression &#038; Optimization"}]}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel="dns-prefetch" href="//assets5.lottiefiles.com">
+<link rel="dns-prefetch" href="//assets6.lottiefiles.com">
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//img.tataweb.net">
+<link href="https://img.tataweb.net/" rel="preconnect">
+<link rel="alternate" type="application/rss+xml" title="TataWeb &raquo; Feed" href="https://www.tataweb.net/feed/">
+<link rel="alternate" type="application/rss+xml" title="TataWeb &raquo; Umpan Komentar" href="https://www.tataweb.net/comments/feed/">
+<style type="text/css">img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}</style>
+	<link rel="preload" href="https://www.tataweb.net/wp-includes/css/dist/block-library/style.min.css?ver=5.8.2" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<link data-minify="1" rel="preload" href="https://www.tataweb.net/wp-content/cache/min/1/wp-content/plugins/translatepress-multilingual/assets/css/trp-language-switcher.css?ver=1637590815" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<link rel="preload" href="https://www.tataweb.net/wp-content/themes/hello-elementor/style.min.css?ver=2.4.1" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<link rel="preload" href="https://www.tataweb.net/wp-content/themes/hello-elementor/theme.min.css?ver=2.4.1" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<link rel="preload" href="https://www.tataweb.net/wp-content/plugins/elementor/assets/css/frontend-lite.min.css?ver=3.4.7" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<style id="elementor-frontend-inline-css" type="text/css">@font-face{font-family:eicons;src:url(https://www.tataweb.net/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.eot?5.10.0);src:url(https://www.tataweb.net/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.eot?5.10.0#iefix) format("embedded-opentype"),url(https://www.tataweb.net/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.woff2?5.10.0) format("woff2"),url(https://www.tataweb.net/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.woff?5.10.0) format("woff"),url(https://www.tataweb.net/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.ttf?5.10.0) format("truetype"),url(https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.svg?5.10.0#eicon) format("svg");font-weight:400;font-style:normal}</style>
+<link data-minify="1" rel="preload" href="https://www.tataweb.net/wp-content/cache/min/1/wp-content/uploads/elementor/css/post-144.css?ver=1637592215" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<link rel="preload" href="https://www.tataweb.net/wp-content/plugins/elementor-pro/assets/css/frontend-lite.min.css?ver=3.4.1" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<link data-minify="1" rel="preload" href="https://www.tataweb.net/wp-content/cache/min/1/wp-content/uploads/elementor/css/post-3710.css?ver=1637590841" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<link data-minify="1" rel="preload" href="https://www.tataweb.net/wp-content/cache/min/1/wp-content/uploads/elementor/css/post-2607.css?ver=1637592215" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<link data-minify="1" rel="preload" href="https://www.tataweb.net/wp-content/cache/min/1/wp-content/uploads/elementor/css/post-3055.css?ver=1637592215" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Montserrat%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CPlayfair+Display%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&#038;display=swap&#038;ver=5.8.2" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<link rel="https://api.w.org/" href="https://www.tataweb.net/wp-json/">
+<link rel="alternate" type="application/json" href="https://www.tataweb.net/wp-json/wp/v2/pages/3710">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.tataweb.net/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.tataweb.net/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 5.8.2">
+<link rel="shortlink" href="https://www.tataweb.net/?p=3710">
+<link rel="alternate" type="application/json+oembed" href="https://www.tataweb.net/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fhttps://www.tataweb.net%2Fimage-compression-optimization%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://www.tataweb.net/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fhttps://www.tataweb.net%2Fimage-compression-optimization%2F&#038;format=xml">
+<link rel="alternate" hreflang="id-ID" href="https://www.tataweb.net/image-compression-optimization/">
+<link rel="alternate" hreflang="id" href="https://www.tataweb.net/image-compression-optimization/">
+<link rel="alternate" hreflang="en-US" href="https://www.tataweb.net/en/image-compression-optimization/">
+<link rel="alternate" hreflang="en" href="https://www.tataweb.net/en/image-compression-optimization/">
+<link rel="icon" href="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/2020/12/cropped-android-chrome-512x512-1-32x32.png" sizes="32x32">
+<link rel="icon" href="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/2020/12/cropped-android-chrome-512x512-1-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/2020/12/cropped-android-chrome-512x512-1-180x180.png">
+<meta name="msapplication-TileImage" content="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/2020/12/cropped-android-chrome-512x512-1-270x270.png">
+<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript>
+<script type="rocketlazyloadscript">
+/*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
+(function(w){"use strict";if(!w.loadCSS){w.loadCSS=function(){}}
+var rp=loadCSS.relpreload={};rp.support=(function(){var ret;try{ret=w.document.createElement("link").relList.supports("preload")}catch(e){ret=!1}
+return function(){return ret}})();rp.bindMediaToggle=function(link){var finalMedia=link.media||"all";function enableStylesheet(){link.media=finalMedia}
+if(link.addEventListener){link.addEventListener("load",enableStylesheet)}else if(link.attachEvent){link.attachEvent("onload",enableStylesheet)}
+setTimeout(function(){link.rel="stylesheet";link.media="only x"});setTimeout(enableStylesheet,3000)};rp.poly=function(){if(rp.support()){return}
+var links=w.document.getElementsByTagName("link");for(var i=0;i<links.length;i++){var link=links[i];if(link.rel==="preload"&&link.getAttribute("as")==="style"&&!link.getAttribute("data-loadcss")){link.setAttribute("data-loadcss",!0);rp.bindMediaToggle(link)}}};if(!rp.support()){rp.poly();var run=w.setInterval(rp.poly,500);if(w.addEventListener){w.addEventListener("load",function(){rp.poly();w.clearInterval(run)})}else if(w.attachEvent){w.attachEvent("onload",function(){rp.poly();w.clearInterval(run)})}}
+if(typeof exports!=="undefined"){exports.loadCSS=loadCSS}
+else{w.loadCSS=loadCSS}}(typeof global!=="undefined"?global:this))
+</script>
+</head>
+<body class="page-template page-template-elementor_header_footer page page-id-3710 wp-custom-logo translatepress-id_ID elementor-default elementor-template-full-width elementor-kit-144 elementor-page elementor-page-3710">
+
+		<div data-elementor-type="header" data-elementor-id="2607" class="elementor elementor-2607 elementor-location-header" data-elementor-settings="[]">
+		<div class="elementor-section-wrap">
+					<header class="elementor-section elementor-top-section elementor-element elementor-element-41a1cb20 elementor-section-height-min-height elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-items-middle" data-id="41a1cb20" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-7c289597" data-id="7c289597" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-28b1ca2b elementor-widget elementor-widget-image" data-id="28b1ca2b" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.4.7 - 31-10-2021 */
+.elementor-widget-image{text-align:center}.elementor-widget-image a{display:inline-block}.elementor-widget-image a img[src$=".svg"]{width:48px}.elementor-widget-image img{vertical-align:middle;display:inline-block}</style>													<a href="https://www.tataweb.net/">
+							<img width="245" height="50" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20245%2050'%3E%3C/svg%3E" title="logo tataweb new orange" alt="TataWeb" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/logo-tataweb-new-orange-p9nfni4vwh9365wz7idiv9693mdqxfqv26vow21yyc.png"><noscript><img width="245" height="50" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/logo-tataweb-new-orange-p9nfni4vwh9365wz7idiv9693mdqxfqv26vow21yyc.png" title="logo tataweb new orange" alt="TataWeb"></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-2cb3f41a" data-id="2cb3f41a" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-5cf4130 elementor-nav-menu--stretch elementor-widget__width-auto elementor-nav-menu__text-align-center elementor-nav-menu__align-right elementor-nav-menu--dropdown-tablet elementor-nav-menu--toggle elementor-nav-menu--burger elementor-widget elementor-widget-nav-menu" data-id="5cf4130" data-element_type="widget" data-settings="{&quot;full_width&quot;:&quot;stretch&quot;,&quot;layout&quot;:&quot;horizontal&quot;,&quot;submenu_icon&quot;:{&quot;value&quot;:&quot;&lt;svg class=\&quot;e-font-icon-svg\&quot;&gt;&lt;use xlink:href=\&quot;#fas-caret-down\&quot; \/&gt;&lt;\/svg&gt;&quot;,&quot;library&quot;:&quot;fa-solid&quot;},&quot;toggle&quot;:&quot;burger&quot;}" data-widget_type="nav-menu.default">
+				<div class="elementor-widget-container">
+			<link rel="preload" href="https://www.tataweb.net/wp-content/plugins/elementor-pro/assets/css/widget-nav-menu.min.css" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'">			<nav migration_allowed="1" migrated="0" role="navigation" class="elementor-nav-menu--main elementor-nav-menu__container elementor-nav-menu--layout-horizontal e--pointer-none"><ul id="menu-1-5cf4130" class="elementor-nav-menu">
+<li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children menu-item-4726">
+<a href="#" class="elementor-item elementor-item-anchor">Layanan</a>
+<ul class="sub-menu elementor-nav-menu--dropdown">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4374">
+<a href="https://www.tataweb.net/web-development/" class="elementor-sub-item">Web Development</a>
+	<ul class="sub-menu elementor-nav-menu--dropdown">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2299"><a href="https://www.tataweb.net/fitur-fitur/" class="elementor-sub-item">Fitur</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2917"><a href="https://www.tataweb.net/portofolio/" class="elementor-sub-item">Portofolio</a></li>
+	</ul>
+</li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3707"><a href="https://www.tataweb.net/content-delivery-network-cdn/" class="elementor-sub-item">Content Delivery Network (CDN)</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-3710 current_page_item menu-item-3780"><a href="https://www.tataweb.net/image-compression-optimization/" aria-current="page" class="elementor-sub-item elementor-item-active">Image Compression &#038; Optimization</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3781"><a href="https://www.tataweb.net/email-hosting-powered-by-mailchannels/" class="elementor-sub-item">Email Hosting</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3826"><a href="https://www.tataweb.net/instal-manajemen-vps/" class="elementor-sub-item">Instal &#038; Manajemen VPS</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3825"><a href="https://www.tataweb.net/vpn-privat/" class="elementor-sub-item">VPN Privat</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3876"><a href="https://www.tataweb.net/cloud-pbx/" class="elementor-sub-item">Cloud PBX</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3824"><a href="https://www.tataweb.net/pfsense/" class="elementor-sub-item">pfSense</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3823"><a href="https://www.tataweb.net/thin-client/" class="elementor-sub-item">Thin Client</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2737"><a href="https://blog.tataweb.net/" class="elementor-item">Blog</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4562"><a href="https://tataweb.freshdesk.com/support/tickets/new" class="elementor-item">Kontak</a></li>
+<li class="trp-language-switcher-container menu-item menu-item-type-post_type menu-item-object-language_switcher menu-item-has-children current-language-menu-item menu-item-4721">
+<a href="https://www.tataweb.net/image-compression-optimization/" class="elementor-item"><span data-no-translation><img class="trp-flag-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2018%2012'%3E%3C/svg%3E" width="18" height="12" alt="id_ID" title="Bahasa Indonesia" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/plugins/translatepress-multilingual/assets/images/flags/id_ID.png"><noscript><img class="trp-flag-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/plugins/translatepress-multilingual/assets/images/flags/id_ID.png" width="18" height="12" alt="id_ID" title="Bahasa Indonesia"></noscript></span></a>
+<ul class="sub-menu elementor-nav-menu--dropdown">
+	<li class="trp-language-switcher-container menu-item menu-item-type-post_type menu-item-object-language_switcher menu-item-4722"><a href="https://www.tataweb.net/en/image-compression-optimization/" class="elementor-sub-item"><span data-no-translation><img class="trp-flag-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2018%2012'%3E%3C/svg%3E" width="18" height="12" alt="en_US" title="English" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_US.png"><noscript><img class="trp-flag-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_US.png" width="18" height="12" alt="en_US" title="English"></noscript></span></a></li>
+</ul>
+</li>
+</ul></nav>
+					<div class="elementor-menu-toggle" role="button" tabindex="0" aria-label="Menu Toggle" aria-expanded="false">
+			<i aria-hidden="true" role="presentation" class="eicon-menu-bar"></i>			<span class="elementor-screen-only">Tidak bisa</span>
+		</div>
+			<nav class="elementor-nav-menu--dropdown elementor-nav-menu__container" role="navigation" aria-hidden="true"><ul id="menu-2-5cf4130" class="elementor-nav-menu">
+<li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children menu-item-4726">
+<a href="#" class="elementor-item elementor-item-anchor" tabindex="-1">Layanan</a>
+<ul class="sub-menu elementor-nav-menu--dropdown">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4374">
+<a href="https://www.tataweb.net/web-development/" class="elementor-sub-item" tabindex="-1">Web Development</a>
+	<ul class="sub-menu elementor-nav-menu--dropdown">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2299"><a href="https://www.tataweb.net/fitur-fitur/" class="elementor-sub-item" tabindex="-1">Fitur</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2917"><a href="https://www.tataweb.net/portofolio/" class="elementor-sub-item" tabindex="-1">Portofolio</a></li>
+	</ul>
+</li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3707"><a href="https://www.tataweb.net/content-delivery-network-cdn/" class="elementor-sub-item" tabindex="-1">Content Delivery Network (CDN)</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-3710 current_page_item menu-item-3780"><a href="https://www.tataweb.net/image-compression-optimization/" aria-current="page" class="elementor-sub-item elementor-item-active" tabindex="-1">Image Compression &#038; Optimization</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3781"><a href="https://www.tataweb.net/email-hosting-powered-by-mailchannels/" class="elementor-sub-item" tabindex="-1">Email Hosting</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3826"><a href="https://www.tataweb.net/instal-manajemen-vps/" class="elementor-sub-item" tabindex="-1">Instal &#038; Manajemen VPS</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3825"><a href="https://www.tataweb.net/vpn-privat/" class="elementor-sub-item" tabindex="-1">VPN Privat</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3876"><a href="https://www.tataweb.net/cloud-pbx/" class="elementor-sub-item" tabindex="-1">Cloud PBX</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3824"><a href="https://www.tataweb.net/pfsense/" class="elementor-sub-item" tabindex="-1">pfSense</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3823"><a href="https://www.tataweb.net/thin-client/" class="elementor-sub-item" tabindex="-1">Thin Client</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2737"><a href="https://blog.tataweb.net/" class="elementor-item" tabindex="-1">Blog</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4562"><a href="https://tataweb.freshdesk.com/support/tickets/new" class="elementor-item" tabindex="-1">Kontak</a></li>
+<li class="trp-language-switcher-container menu-item menu-item-type-post_type menu-item-object-language_switcher menu-item-has-children current-language-menu-item menu-item-4721">
+<a href="https://www.tataweb.net/image-compression-optimization/" class="elementor-item" tabindex="-1"><span data-no-translation><img class="trp-flag-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2018%2012'%3E%3C/svg%3E" width="18" height="12" alt="id_ID" title="Bahasa Indonesia" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/plugins/translatepress-multilingual/assets/images/flags/id_ID.png"><noscript><img class="trp-flag-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/plugins/translatepress-multilingual/assets/images/flags/id_ID.png" width="18" height="12" alt="id_ID" title="Bahasa Indonesia"></noscript></span></a>
+<ul class="sub-menu elementor-nav-menu--dropdown">
+	<li class="trp-language-switcher-container menu-item menu-item-type-post_type menu-item-object-language_switcher menu-item-4722"><a href="https://www.tataweb.net/en/image-compression-optimization/" class="elementor-sub-item" tabindex="-1"><span data-no-translation><img class="trp-flag-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2018%2012'%3E%3C/svg%3E" width="18" height="12" alt="en_US" title="English" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_US.png"><noscript><img class="trp-flag-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_US.png" width="18" height="12" alt="en_US" title="English"></noscript></span></a></li>
+</ul>
+</li>
+</ul></nav>
+				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-2aaa994" data-id="2aaa994" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-24dca8fa elementor-widget__width-auto elementor-align-right elementor-tablet-align-right elementor-widget elementor-widget-button" data-id="24dca8fa" data-element_type="widget" data-widget_type="button.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-button-wrapper">
+			<a href="https://tataweb.freshdesk.com/support/login" target="_blank" rel="noopener" class="elementor-button-link elementor-button elementor-size-sm" role="button">
+						<span class="elementor-button-content-wrapper">
+						<span class="elementor-button-text">Support</span>
+		</span>
+					</a>
+		</div>
+				</div>
+				</div>
+					</div>
+		</div>
+							</div>
+		</header>
+				</div>
+		</div>
+				<div data-elementor-type="wp-page" data-elementor-id="3710" class="elementor elementor-3710" data-elementor-settings="[]">
+							<div class="elementor-section-wrap">
+							<section class="elementor-section elementor-top-section elementor-element elementor-element-20dd409 elementor-section-height-min-height elementor-section-items-top elementor-section-boxed elementor-section-height-default" data-id="20dd409" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+							<div class="elementor-background-overlay"></div>
+							<div class="elementor-container elementor-column-gap-no">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-22db2eb" data-id="22db2eb" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-039e880 elementor-invisible elementor-widget elementor-widget-image" data-id="039e880" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;slideInDown&quot;}" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img width="150" height="214" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%20214'%3E%3C/svg%3E" title="astronot image" alt="astronot image" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/astronot-image-pcd9a7wyxhx6u2hah40d42ace0r47osaq6l2lr8hjw.png"><noscript><img width="150" height="214" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/astronot-image-pcd9a7wyxhx6u2hah40d42ace0r47osaq6l2lr8hjw.png" title="astronot image" alt="astronot image"></noscript>															</div>
+				</div>
+				<div class="elementor-element elementor-element-a030230 elementor-widget elementor-widget-heading" data-id="a030230" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.4.7 - 31-10-2021 */
+.elementor-heading-title{padding:0;margin:0;line-height:1}.elementor-widget-heading .elementor-heading-title[class*=elementor-size-]>a{color:inherit;font-size:inherit;line-height:inherit}.elementor-widget-heading .elementor-heading-title.elementor-size-small{font-size:15px}.elementor-widget-heading .elementor-heading-title.elementor-size-medium{font-size:19px}.elementor-widget-heading .elementor-heading-title.elementor-size-large{font-size:29px}.elementor-widget-heading .elementor-heading-title.elementor-size-xl{font-size:39px}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl{font-size:59px}</style>
+<h1 class="elementor-heading-title elementor-size-default">Image Compression & Optimization</h1>		</div>
+				</div>
+				<div class="elementor-element elementor-element-7bb8dbf elementor-widget elementor-widget-text-editor" data-id="7bb8dbf" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.4.7 - 31-10-2021 */
+.elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#818a91;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#818a91;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>				<p>Layanan Image Compression &amp; Optimization ini akan membantu melakukan kompresi dan optimisasi pada gambar pada website anda, sehingga mempercepat loading.<br>Hasil tes kami menunjukkan, layanan ini dapat menurunkan ukuran file gambar hingga 90%, tanpa mengurangi kualitasnya!</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-0835c4a elementor-widget elementor-widget-heading" data-id="0835c4a" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">compress</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-de1b315 elementor-widget elementor-widget-image" data-id="de1b315" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img width="600" height="465" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20600%20465'%3E%3C/svg%3E" title="image compression" alt="Image Compression Optimization" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/image-compression-pcd9111xl5tnhoiehwtvurbo83zc6mv6x2v68cn8ru.png"><noscript><img width="600" height="465" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/image-compression-pcd9111xl5tnhoiehwtvurbo83zc6mv6x2v68cn8ru.png" title="image compression" alt="Image Compression Optimization"></noscript>															</div>
+				</div>
+					</div>
+		</div>
+							</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-690f02 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="690f02" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;shape_divider_bottom&quot;:&quot;pyramids&quot;}">
+							<div class="elementor-background-overlay"></div>
+						<div class="elementor-shape elementor-shape-bottom" data-negative="false">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1000 100" preserveaspectratio="none">
+	<path class="elementor-shape-fill" d="M761.9,44.1L643.1,27.2L333.8,98L0,3.8V0l1000,0v3.9"></path>
+</svg>		</div>
+					<div class="elementor-container elementor-column-gap-no">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-c410c86" data-id="c410c86" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-5a4ebc26 elementor-widget elementor-widget-heading" data-id="5a4ebc26" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h4 class="elementor-heading-title elementor-size-default">Fitur-Fitur</h4>		</div>
+				</div>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-2cbd2828 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="2cbd2828" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-no">
+					<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-7f5bf7e8" data-id="7f5bf7e8" data-element_type="column" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-c912f1b elementor-view-default elementor-position-top elementor-vertical-align-top elementor-widget elementor-widget-icon-box" data-id="c912f1b" data-element_type="widget" data-widget_type="icon-box.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.4.7 - 31-10-2021 */
+@media (min-width:768px){.elementor-widget-icon-box.elementor-position-left .elementor-icon-box-wrapper,.elementor-widget-icon-box.elementor-position-right .elementor-icon-box-wrapper{display:-webkit-box;display:-ms-flexbox;display:flex}.elementor-widget-icon-box.elementor-position-left .elementor-icon-box-icon,.elementor-widget-icon-box.elementor-position-right .elementor-icon-box-icon{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-flex:0;-ms-flex:0 0 auto;flex:0 0 auto}.elementor-widget-icon-box.elementor-position-right .elementor-icon-box-wrapper{text-align:right;-webkit-box-orient:horizontal;-webkit-box-direction:reverse;-ms-flex-direction:row-reverse;flex-direction:row-reverse}.elementor-widget-icon-box.elementor-position-left .elementor-icon-box-wrapper{text-align:left;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row}.elementor-widget-icon-box.elementor-position-top .elementor-icon-box-img{margin:auto}.elementor-widget-icon-box.elementor-vertical-align-top .elementor-icon-box-wrapper{-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start}.elementor-widget-icon-box.elementor-vertical-align-middle .elementor-icon-box-wrapper{-webkit-box-align:center;-ms-flex-align:center;align-items:center}.elementor-widget-icon-box.elementor-vertical-align-bottom .elementor-icon-box-wrapper{-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end}}@media (max-width:767px){.elementor-widget-icon-box .elementor-icon-box-icon{margin-left:auto!important;margin-right:auto!important;margin-bottom:15px}}.elementor-widget-icon-box .elementor-icon-box-wrapper{text-align:center}.elementor-widget-icon-box .elementor-icon-box-title a{color:inherit}.elementor-widget-icon-box .elementor-icon-box-content{-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1}.elementor-widget-icon-box .elementor-icon-box-description{margin:0}</style>		<div class="elementor-icon-box-wrapper">
+						<div class="elementor-icon-box-icon">
+				<span class="elementor-icon elementor-animation-">
+				<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-compress-arrows-alt"></use></svg>				</span>
+			</div>
+						<div class="elementor-icon-box-content">
+				<h3 class="elementor-icon-box-title">
+					<span>
+						Kompresi & Performa					</span>
+				</h3>
+									<p class="elementor-icon-box-description">
+						Dengan beberapa baris kode,  dapat mengurangi ukuran gambar secara substansial, dan menampilkannya di depan pelanggan dengan cepat.					</p>
+							</div>
+		</div>
+				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-6c2e62be" data-id="6c2e62be" data-element_type="column" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-a634e1a elementor-view-default elementor-position-top elementor-vertical-align-top elementor-widget elementor-widget-icon-box" data-id="a634e1a" data-element_type="widget" data-widget_type="icon-box.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-icon-box-wrapper">
+						<div class="elementor-icon-box-icon">
+				<span class="elementor-icon elementor-animation-">
+				<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-images"></use></svg>				</span>
+			</div>
+						<div class="elementor-icon-box-content">
+				<h3 class="elementor-icon-box-title">
+					<span>
+						Dukungan Format WebP					</span>
+				</h3>
+									<p class="elementor-icon-box-description">
+						Secara otmatis akan mengubah format gambar ke WebP, format gambar web modern dari Google, menjadikan ukuran gambar yang optimal.					</p>
+							</div>
+		</div>
+				</div>
+				</div>
+					</div>
+		</div>
+							</div>
+		</section>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-63b05d0 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="63b05d0" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-no">
+					<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-4ac6cb9e" data-id="4ac6cb9e" data-element_type="column" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-9b186de elementor-view-default elementor-position-top elementor-vertical-align-top elementor-widget elementor-widget-icon-box" data-id="9b186de" data-element_type="widget" data-widget_type="icon-box.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-icon-box-wrapper">
+						<div class="elementor-icon-box-icon">
+				<span class="elementor-icon elementor-animation-">
+				<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-code"></use></svg>				</span>
+			</div>
+						<div class="elementor-icon-box-content">
+				<h3 class="elementor-icon-box-title">
+					<span>
+						Transformasi Real-Time					</span>
+				</h3>
+									<p class="elementor-icon-box-description">
+						Proses kompresi dan optimisasi berjalan secara real-time, tidak membutuhkan campur tangan manusia, baik untuk jumlah ratusan atau ribuan gambar!					</p>
+							</div>
+		</div>
+				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-7cf0d7fe" data-id="7cf0d7fe" data-element_type="column" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-3087e91 elementor-view-default elementor-position-top elementor-vertical-align-top elementor-widget elementor-widget-icon-box" data-id="3087e91" data-element_type="widget" data-widget_type="icon-box.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-icon-box-wrapper">
+						<div class="elementor-icon-box-icon">
+				<span class="elementor-icon elementor-animation-">
+				<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-globe-americas"></use></svg>				</span>
+			</div>
+						<div class="elementor-icon-box-content">
+				<h3 class="elementor-icon-box-title">
+					<span>
+						CDN					</span>
+				</h3>
+									<p class="elementor-icon-box-description">
+						Untuk paket Kompres #3, dapatkan layanan CDN dari AWS Amazon Cloudfront. Jaminan pengantaran gambar lebih cepat untuk pengunjung dari seluruh dunia!					</p>
+							</div>
+		</div>
+				</div>
+				</div>
+					</div>
+		</div>
+							</div>
+		</section>
+					</div>
+		</div>
+							</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-3797ad1 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="3797ad1" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-341f6e7" data-id="341f6e7" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-c389728 elementor-widget elementor-widget-heading" data-id="c389728" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h4 class="elementor-heading-title elementor-size-default">Harga</h4>		</div>
+				</div>
+					</div>
+		</div>
+							</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-7e6fffdf elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="7e6fffdf" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+							<div class="elementor-background-overlay"></div>
+							<div class="elementor-container elementor-column-gap-no">
+					<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-5112d525" data-id="5112d525" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-2b0b5a18 elementor-widget elementor-widget-price-table" data-id="2b0b5a18" data-element_type="widget" data-widget_type="price-table.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor-pro - v3.4.1 - 01-09-2021 */
+.elementor-widget-price-list .elementor-price-list{list-style:none;padding:0;margin:0}.elementor-widget-price-list .elementor-price-list li{margin:0}.elementor-price-list li:not(:last-child){margin-bottom:20px}.elementor-price-list .elementor-price-list-image{max-width:50%;-ms-flex-negative:0;flex-shrink:0;padding-right:25px}.elementor-price-list .elementor-price-list-image img{width:100%}.elementor-price-list .elementor-price-list-header,.elementor-price-list .elementor-price-list-item,.elementor-price-list .elementor-price-list-text{display:-webkit-box;display:-ms-flexbox;display:flex}.elementor-price-list .elementor-price-list-item{-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start}.elementor-price-list .elementor-price-list-item .elementor-price-list-text{-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1}.elementor-price-list .elementor-price-list-item .elementor-price-list-header{-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-preferred-size:100%;flex-basis:100%;font-size:19px;font-weight:600;margin-bottom:10px;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.elementor-price-list .elementor-price-list-item .elementor-price-list-title{max-width:80%}.elementor-price-list .elementor-price-list-item p.elementor-price-list-description{-ms-flex-preferred-size:100%;flex-basis:100%;font-size:14px;margin:0}.elementor-price-list .elementor-price-list-item .elementor-price-list-separator{-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;margin-left:10px;margin-right:10px;border-bottom-style:dotted;border-bottom-width:2px;height:0}.elementor-price-table{text-align:center}.elementor-price-table .elementor-price-table__header{background:var(--e-price-table-header-background-color,#555);padding:20px 0}.elementor-price-table .elementor-price-table__heading{margin:0;padding:0;line-height:1.2;font-size:24px;font-weight:600;color:#fff}.elementor-price-table .elementor-price-table__subheading{font-size:13px;font-weight:400;color:#fff}.elementor-price-table .elementor-price-table__original-price{margin-right:15px;text-decoration:line-through;font-size:.5em;line-height:1;font-weight:400;-ms-flex-item-align:center;align-self:center}.elementor-price-table .elementor-price-table__original-price .elementor-price-table__currency{font-size:1em;margin:0}.elementor-price-table .elementor-price-table__price{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;color:#555;font-weight:800;font-size:65px;padding:40px 0}.elementor-price-table .elementor-price-table__price .elementor-typo-excluded{line-height:normal;letter-spacing:normal;text-transform:none;font-weight:400;font-size:medium;font-style:normal}.elementor-price-table .elementor-price-table__after-price{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;text-align:left;-ms-flex-item-align:stretch;align-self:stretch;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.elementor-price-table .elementor-price-table__integer-part{line-height:.8}.elementor-price-table .elementor-price-table__currency,.elementor-price-table .elementor-price-table__fractional-part{line-height:1;font-size:.3em}.elementor-price-table .elementor-price-table__currency{margin-right:3px}.elementor-price-table .elementor-price-table__period{width:100%;font-size:13px;font-weight:400}.elementor-price-table .elementor-price-table__features-list{list-style-type:none;margin:0;padding:0;line-height:1;color:var(--e-price-table-features-list-color)}.elementor-price-table .elementor-price-table__features-list li{font-size:14px;line-height:1;margin:0;padding:0}.elementor-price-table .elementor-price-table__features-list li .elementor-price-table__feature-inner{margin-left:15px;margin-right:15px}.elementor-price-table .elementor-price-table__features-list li:not(:first-child):before{content:"";display:block;border:0 solid hsla(0,0%,47.8%,.3);margin:10px 12.5%}.elementor-price-table .elementor-price-table__features-list i{margin-right:10px;font-size:1.3em}.elementor-price-table .elementor-price-table__features-list svg{margin-right:10px;fill:var(--e-price-table-features-list-color);height:1.3em;width:1.3em}.elementor-price-table .elementor-price-table__features-list svg~*{vertical-align:text-top}.elementor-price-table .elementor-price-table__footer{padding:30px 0}.elementor-price-table .elementor-price-table__additional_info{margin:0;font-size:13px;line-height:1.4}.elementor-price-table__ribbon{position:absolute;top:0;left:auto;right:0;-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg);width:150px;overflow:hidden;height:150px}.elementor-price-table__ribbon-inner{text-align:center;left:0;width:200%;-webkit-transform:translateY(-50%) translateX(-50%) translateX(35px) rotate(-45deg);-ms-transform:translateY(-50%) translateX(-50%) translateX(35px) rotate(-45deg);transform:translateY(-50%) translateX(-50%) translateX(35px) rotate(-45deg);margin-top:35px;font-size:13px;line-height:2;font-weight:800;text-transform:uppercase;background:#000}.elementor-price-table__ribbon.elementor-ribbon-left{-webkit-transform:rotate(0);-ms-transform:rotate(0);transform:rotate(0);left:0;right:auto}.elementor-price-table__ribbon.elementor-ribbon-right{-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg);left:auto;right:0}.elementor-widget-price-table .elementor-widget-container{overflow:hidden;background-color:#f7f7f7}</style>
+		<div class="elementor-price-table">
+							<div class="elementor-price-table__header">
+											<h3 class="elementor-price-table__heading">Kompres #1</h3>
+					
+									</div>
+			
+			<div class="elementor-price-table__price">
+								<span class="elementor-price-table__currency">Rp.</span>									<span class="elementor-price-table__integer-part">250</span>
+				
+									<div class="elementor-price-table__after-price">
+						<span class="elementor-price-table__fractional-part">000</span>
+
+											</div>
+				
+				
+									<span class="elementor-price-table__period elementor-typo-excluded">sekali saja</span>							</div>
+
+							<ul class="elementor-price-table__features-list">
+											<li class="elementor-repeater-item-c1e67b1">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										Bayar 1 Kali Saja									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-2af3de2">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										10 Domain									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-a270e36">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										Server by Fly.io									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-9516255">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										Non-CDN									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-d985361">
+							<div class="elementor-price-table__feature-inner">
+																									<span>
+										Lokasi Server di Asia/US/Eropa									</span>
+																</div>
+						</li>
+									</ul>
+			
+							<div class="elementor-price-table__footer">
+											<a class="elementor-price-table__button elementor-button elementor-size-md elementor-animation-grow" href="https://pay.tataweb.net/product/kompres-1/">ORDER</a>
+					
+									</div>
+					</div>
+
+				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-592965b" data-id="592965b" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-78402cd elementor-widget elementor-widget-price-table" data-id="78402cd" data-element_type="widget" data-widget_type="price-table.default">
+				<div class="elementor-widget-container">
+			
+		<div class="elementor-price-table">
+							<div class="elementor-price-table__header">
+											<h3 class="elementor-price-table__heading">Kompres #2</h3>
+					
+									</div>
+			
+			<div class="elementor-price-table__price">
+								<span class="elementor-price-table__currency">Rp.</span>									<span class="elementor-price-table__integer-part">10</span>
+				
+									<div class="elementor-price-table__after-price">
+						<span class="elementor-price-table__fractional-part">000</span>
+
+											</div>
+				
+				
+									<span class="elementor-price-table__period elementor-typo-excluded">bulan</span>							</div>
+
+							<ul class="elementor-price-table__features-list">
+											<li class="elementor-repeater-item-c1e67b1">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										Harga per 1 bulan									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-2af3de2">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										1 Domain									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-a270e36">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										Unlimited Bandwidth									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-4369ef9">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										Non-CDN									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-f4b8853">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										Lokasi Server di Singapura									</span>
+																</div>
+						</li>
+									</ul>
+			
+							<div class="elementor-price-table__footer">
+											<a class="elementor-price-table__button elementor-button elementor-size-md elementor-animation-grow" href="https://pay.tataweb.net/product/kompres-2/">ORDER</a>
+					
+									</div>
+					</div>
+
+				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-26819837" data-id="26819837" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-1c534ab elementor-widget elementor-widget-price-table" data-id="1c534ab" data-element_type="widget" data-widget_type="price-table.default">
+				<div class="elementor-widget-container">
+			
+		<div class="elementor-price-table">
+							<div class="elementor-price-table__header">
+											<h3 class="elementor-price-table__heading">Kompres #3</h3>
+					
+									</div>
+			
+			<div class="elementor-price-table__price">
+								<span class="elementor-price-table__currency">Rp.</span>									<span class="elementor-price-table__integer-part">15</span>
+				
+									<div class="elementor-price-table__after-price">
+						<span class="elementor-price-table__fractional-part">000</span>
+
+											</div>
+				
+				
+									<span class="elementor-price-table__period elementor-typo-excluded">bulan</span>							</div>
+
+							<ul class="elementor-price-table__features-list">
+											<li class="elementor-repeater-item-c1e67b1">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										Harga per 1 Bulan									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-2af3de2">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										1 Domain									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-a270e36">
+							<div class="elementor-price-table__feature-inner">
+																		<i class="" aria-hidden="true"></i>
+																											<span>
+										100 GB Bandwidth									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-b8214fd">
+							<div class="elementor-price-table__feature-inner">
+																									<span>
+										CDN by AWS Cloudfront									</span>
+																</div>
+						</li>
+											<li class="elementor-repeater-item-7fa8b31">
+							<div class="elementor-price-table__feature-inner">
+																									<span>
+										Lokasi Server Global									</span>
+																</div>
+						</li>
+									</ul>
+			
+							<div class="elementor-price-table__footer">
+											<a class="elementor-price-table__button elementor-button elementor-size-md elementor-animation-grow" href="https://pay.tataweb.net/product/kompres-3/">ORDER</a>
+					
+									</div>
+					</div>
+
+					<div class="elementor-price-table__ribbon">
+				<div class="elementor-price-table__ribbon-inner">Popular</div>
+			</div>
+					</div>
+				</div>
+					</div>
+		</div>
+							</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-1efdcd8f elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="1efdcd8f" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-no">
+					<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-99e7794" data-id="99e7794" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-69817b4e elementor-widget elementor-widget-heading" data-id="69817b4e" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Gratis layanan Image Compression & Optimization </h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-3011a5bf elementor-widget elementor-widget-text-editor" data-id="3011a5bf" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Untuk Web/Aplikasi yang kami kerjakan, akan mendapatkan layanan ini seacara gratis!</p>						</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-87dca81" data-id="87dca81" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-390a1dd0 elementor-align-right elementor-mobile-align-center elementor-widget elementor-widget-button" data-id="390a1dd0" data-element_type="widget" data-widget_type="button.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-button-wrapper">
+			<a href="https://www.tataweb.net/web-development/" class="elementor-button-link elementor-button elementor-size-sm elementor-animation-grow" role="button">
+						<span class="elementor-button-content-wrapper">
+						<span class="elementor-button-text">Info Lengkap</span>
+		</span>
+					</a>
+		</div>
+				</div>
+				</div>
+					</div>
+		</div>
+							</div>
+		</section>
+						</div>
+					</div>
+				<div data-elementor-type="footer" data-elementor-id="3055" class="elementor elementor-3055 elementor-location-footer" data-elementor-settings="[]">
+		<div class="elementor-section-wrap">
+					<section class="elementor-section elementor-top-section elementor-element elementor-element-275acdc elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="275acdc" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-caf1ee4" data-id="caf1ee4" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-187b009 elementor-widget elementor-widget-heading" data-id="187b009" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Kami Terima Pembayaran:</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-6d00ff0 elementor-widget elementor-widget-image-carousel" data-id="6d00ff0" data-element_type="widget" data-settings="{&quot;slides_to_show&quot;:&quot;5&quot;,&quot;slides_to_show_tablet&quot;:&quot;3&quot;,&quot;navigation&quot;:&quot;none&quot;,&quot;autoplay&quot;:&quot;yes&quot;,&quot;pause_on_hover&quot;:&quot;yes&quot;,&quot;pause_on_interaction&quot;:&quot;yes&quot;,&quot;autoplay_speed&quot;:5000,&quot;infinite&quot;:&quot;yes&quot;,&quot;speed&quot;:500}" data-widget_type="image-carousel.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.4.7 - 31-10-2021 */
+.elementor-widget-image-carousel .swiper-container{position:static}.elementor-widget-image-carousel .swiper-container .swiper-slide figure{line-height:inherit}.elementor-widget-image-carousel .swiper-slide{text-align:center}.elementor-image-carousel-wrapper:not(.swiper-container-initialized) .swiper-slide{max-width:calc(100% / var(--e-image-carousel-slides-to-show, 3))}</style>		<div class="elementor-image-carousel-wrapper swiper-container" dir="ltr">
+			<div class="elementor-image-carousel swiper-wrapper">
+								<div class="swiper-slide"><figure class="swiper-slide-inner"><img width="150" height="64" class="swiper-slide-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2064'%3E%3C/svg%3E" alt="BCA" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/bca-copy-pcffr0g5lkulmzb7o560d8j40dpkdr0lrlw2xmvx8g.png"><noscript><img width="150" height="64" class="swiper-slide-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/bca-copy-pcffr0g5lkulmzb7o560d8j40dpkdr0lrlw2xmvx8g.png" alt="BCA"></noscript></figure></div>
+<div class="swiper-slide"><figure class="swiper-slide-inner"><img width="150" height="63" class="swiper-slide-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2063'%3E%3C/svg%3E" alt="BNI" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/bni-copy-pcffr1dzsevvyl9uinkmxqaklrkxlg4c3qjkewuj1y.png"><noscript><img width="150" height="63" class="swiper-slide-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/bni-copy-pcffr1dzsevvyl9uinkmxqaklrkxlg4c3qjkewuj1y.png" alt="BNI"></noscript></figure></div>
+<div class="swiper-slide"><figure class="swiper-slide-inner"><img width="150" height="54" class="swiper-slide-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2054'%3E%3C/svg%3E" alt="BRI" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/briva-copy-pcffr2btz8x6a78hd5z9i82175gat582fv71w6t4t8.png"><noscript><img width="150" height="54" class="swiper-slide-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/briva-copy-pcffr2btz8x6a78hd5z9i82175gat582fv71w6t4t8.png" alt="BRI"></noscript></figure></div>
+<div class="swiper-slide"><figure class="swiper-slide-inner"><img width="150" height="33" class="swiper-slide-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2033'%3E%3C/svg%3E" alt="VISA" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/cc-copy-pcffr2btz8x6a78hd5z9i82175gat582fv71w6t4ne.png"><noscript><img width="150" height="33" class="swiper-slide-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/cc-copy-pcffr2btz8x6a78hd5z9i82175gat582fv71w6t4ne.png" alt="VISA"></noscript></figure></div>
+<div class="swiper-slide"><figure class="swiper-slide-inner"><img width="150" height="48" class="swiper-slide-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2048'%3E%3C/svg%3E" alt="CIMB Niaga" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/cimb-copy-2-pcffr39o62yglt747odw2pthsjbo0ubsrzujdgrqlc.png"><noscript><img width="150" height="48" class="swiper-slide-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/cimb-copy-2-pcffr39o62yglt747odw2pthsjbo0ubsrzujdgrqlc.png" alt="CIMB Niaga"></noscript></figure></div>
+<div class="swiper-slide"><figure class="swiper-slide-inner"><img width="150" height="60" class="swiper-slide-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2060'%3E%3C/svg%3E" alt="Mandiri" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/mandiri-copy-pcffr47icwzqxf5r26sin7kydx718jfj44i0uqqcig.png"><noscript><img width="150" height="60" class="swiper-slide-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/mandiri-copy-pcffr47icwzqxf5r26sin7kydx718jfj44i0uqqcig.png" alt="Mandiri"></noscript></figure></div>
+<div class="swiper-slide"><figure class="swiper-slide-inner"><img width="150" height="42" class="swiper-slide-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2042'%3E%3C/svg%3E" alt="Maybank" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/maybank-copy-pcffr55cjr11914dwp757pcezb2eg8j9g95ic0oy78.png"><noscript><img width="150" height="42" class="swiper-slide-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/maybank-copy-pcffr55cjr11914dwp757pcezb2eg8j9g95ic0oy78.png" alt="Maybank"></noscript></figure></div>
+<div class="swiper-slide"><figure class="swiper-slide-inner"><img width="150" height="45" class="swiper-slide-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2045'%3E%3C/svg%3E" alt="Muamalat" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/muamalat-copy-pcffr636ql2bkn30r7lrs73vkoxrnxmzsdsztank1u.png"><noscript><img width="150" height="45" class="swiper-slide-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/muamalat-copy-pcffr636ql2bkn30r7lrs73vkoxrnxmzsdsztank1u.png" alt="Muamalat"></noscript></figure></div>
+<div class="swiper-slide"><figure class="swiper-slide-inner"><img width="150" height="55" class="swiper-slide-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2055'%3E%3C/svg%3E" alt="Permata" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/permata-copy-pcffr710xf3lw91nlq0ecovc62t4vmqq4ighakm5ye.png"><noscript><img width="150" height="55" class="swiper-slide-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/permata-copy-pcffr710xf3lw91nlq0ecovc62t4vmqq4ighakm5ye.png" alt="Permata"></noscript></figure></div>
+<div class="swiper-slide"><figure class="swiper-slide-inner"><img width="150" height="78" class="swiper-slide-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2078'%3E%3C/svg%3E" alt="QRIS" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/qris-copy-pcffr7yv494w7v0ag8f0x6msrgoi3buggn3yrukryk.png"><noscript><img width="150" height="78" class="swiper-slide-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/qris-copy-pcffr7yv494w7v0ag8f0x6msrgoi3buggn3yrukryk.png" alt="QRIS"></noscript></figure></div>
+<div class="swiper-slide"><figure class="swiper-slide-inner"><img width="150" height="36" class="swiper-slide-image" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2036'%3E%3C/svg%3E" alt="Sinarmas" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/sinarmas-copy-pcffr8wpb366jgyxaqtnhoe9cujvb0y6srrg94jdgo.png"><noscript><img width="150" height="36" class="swiper-slide-image" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/elementor/thumbs/sinarmas-copy-pcffr8wpb366jgyxaqtnhoe9cujvb0y6srrg94jdgo.png" alt="Sinarmas"></noscript></figure></div>			</div>
+																</div>
+				</div>
+				</div>
+					</div>
+		</div>
+							</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-01c8746 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="01c8746" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+						<div class="elementor-container elementor-column-gap-extended">
+					<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-3bdf014" data-id="3bdf014" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-7b87ede elementor-widget elementor-widget-heading" data-id="7b87ede" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Kontak</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-8504e83 elementor-widget elementor-widget-text-editor" data-id="8504e83" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Perumahan Perhutani<br>Jl. Sambiroto III Blok B No: 7<br>Surabaya Barat 60217</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-0811e0b elementor-shape-circle e-grid-align-left e-grid-align-mobile-center elementor-grid-0 elementor-widget elementor-widget-social-icons" data-id="0811e0b" data-element_type="widget" data-widget_type="social-icons.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.4.7 - 31-10-2021 */
+.elementor-widget-social-icons.elementor-grid-0 .elementor-widget-container,.elementor-widget-social-icons.elementor-grid-mobile-0 .elementor-widget-container,.elementor-widget-social-icons.elementor-grid-tablet-0 .elementor-widget-container{line-height:1;font-size:0}.elementor-widget-social-icons:not(.elementor-grid-0):not(.elementor-grid-tablet-0):not(.elementor-grid-mobile-0) .elementor-grid{display:inline-grid}.elementor-widget-social-icons .elementor-grid{grid-column-gap:var(--grid-column-gap,5px);grid-row-gap:var(--grid-row-gap,5px);grid-template-columns:var(--grid-template-columns);-webkit-box-pack:var(--justify-content,center);-ms-flex-pack:var(--justify-content,center);justify-content:var(--justify-content,center);justify-items:var(--justify-content,center)}.elementor-icon.elementor-social-icon{font-size:var(--icon-size,25px);line-height:var(--icon-size,25px);width:calc(var(--icon-size, 25px) + (2 * var(--icon-padding, .5em)));height:calc(var(--icon-size, 25px) + (2 * var(--icon-padding, .5em)))}.elementor-social-icon{--e-social-icon-icon-color:#fff;display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;background-color:#818a91;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;text-align:center;cursor:pointer}.elementor-social-icon i{color:var(--e-social-icon-icon-color)}.elementor-social-icon svg{fill:var(--e-social-icon-icon-color)}.elementor-social-icon:last-child{margin:0}.elementor-social-icon:hover{opacity:.9;color:#fff}.elementor-social-icon-android{background-color:#a4c639}.elementor-social-icon-apple{background-color:#999}.elementor-social-icon-behance{background-color:#1769ff}.elementor-social-icon-bitbucket{background-color:#205081}.elementor-social-icon-codepen{background-color:#000}.elementor-social-icon-delicious{background-color:#39f}.elementor-social-icon-deviantart{background-color:#05cc47}.elementor-social-icon-digg{background-color:#005be2}.elementor-social-icon-dribbble{background-color:#ea4c89}.elementor-social-icon-elementor{background-color:#d30c5c}.elementor-social-icon-envelope{background-color:#ea4335}.elementor-social-icon-facebook,.elementor-social-icon-facebook-f{background-color:#3b5998}.elementor-social-icon-flickr{background-color:#0063dc}.elementor-social-icon-foursquare{background-color:#2d5be3}.elementor-social-icon-free-code-camp,.elementor-social-icon-freecodecamp{background-color:#006400}.elementor-social-icon-github{background-color:#333}.elementor-social-icon-gitlab{background-color:#e24329}.elementor-social-icon-globe{background-color:#818a91}.elementor-social-icon-google-plus,.elementor-social-icon-google-plus-g{background-color:#dd4b39}.elementor-social-icon-houzz{background-color:#7ac142}.elementor-social-icon-instagram{background-color:#262626}.elementor-social-icon-jsfiddle{background-color:#487aa2}.elementor-social-icon-link{background-color:#818a91}.elementor-social-icon-linkedin,.elementor-social-icon-linkedin-in{background-color:#0077b5}.elementor-social-icon-medium{background-color:#00ab6b}.elementor-social-icon-meetup{background-color:#ec1c40}.elementor-social-icon-mixcloud{background-color:#273a4b}.elementor-social-icon-odnoklassniki{background-color:#f4731c}.elementor-social-icon-pinterest{background-color:#bd081c}.elementor-social-icon-product-hunt{background-color:#da552f}.elementor-social-icon-reddit{background-color:#ff4500}.elementor-social-icon-rss{background-color:#f26522}.elementor-social-icon-shopping-cart{background-color:#4caf50}.elementor-social-icon-skype{background-color:#00aff0}.elementor-social-icon-slideshare{background-color:#0077b5}.elementor-social-icon-snapchat{background-color:#fffc00}.elementor-social-icon-soundcloud{background-color:#f80}.elementor-social-icon-spotify{background-color:#2ebd59}.elementor-social-icon-stack-overflow{background-color:#fe7a15}.elementor-social-icon-steam{background-color:#00adee}.elementor-social-icon-stumbleupon{background-color:#eb4924}.elementor-social-icon-telegram{background-color:#2ca5e0}.elementor-social-icon-thumb-tack{background-color:#1aa1d8}.elementor-social-icon-tripadvisor{background-color:#589442}.elementor-social-icon-tumblr{background-color:#35465c}.elementor-social-icon-twitch{background-color:#6441a5}.elementor-social-icon-twitter{background-color:#1da1f2}.elementor-social-icon-viber{background-color:#665cac}.elementor-social-icon-vimeo{background-color:#1ab7ea}.elementor-social-icon-vk{background-color:#45668e}.elementor-social-icon-weibo{background-color:#dd2430}.elementor-social-icon-weixin{background-color:#31a918}.elementor-social-icon-whatsapp{background-color:#25d366}.elementor-social-icon-wordpress{background-color:#21759b}.elementor-social-icon-xing{background-color:#026466}.elementor-social-icon-yelp{background-color:#af0606}.elementor-social-icon-youtube{background-color:#cd201f}.elementor-social-icon-500px{background-color:#0099e5}.elementor-shape-rounded .elementor-icon.elementor-social-icon{-webkit-border-radius:10%;border-radius:10%}.elementor-shape-circle .elementor-icon.elementor-social-icon{-webkit-border-radius:50%;border-radius:50%}</style>		<div class="elementor-social-icons-wrapper elementor-grid">
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-facebook elementor-repeater-item-12e1f93" href="https://www.facebook.com/TataWeb-100148572193944" target="_blank" rel="noopener">
+						<span class="elementor-screen-only">Facebook</span>
+						<svg class="e-font-icon-svg"><use xlink:href="#fab-facebook"></use></svg>					</a>
+				</span>
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-twitter elementor-repeater-item-e9f109e" href="https://twitter.com/" target="_blank" rel="noopener">
+						<span class="elementor-screen-only">Twitter</span>
+						<svg class="e-font-icon-svg"><use xlink:href="#fab-twitter"></use></svg>					</a>
+				</span>
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-youtube elementor-repeater-item-bf199c8" href="https://www.youtube.com/channel/UCdM1VL3y-wkzPjHSeFmf0Hw" target="_blank" rel="noopener">
+						<span class="elementor-screen-only">Youtube</span>
+						<svg class="e-font-icon-svg"><use xlink:href="#fab-youtube"></use></svg>					</a>
+				</span>
+					</div>
+				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-1c5b30e elementor-hidden-phone" data-id="1c5b30e" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-eb911d0 elementor-widget elementor-widget-heading" data-id="eb911d0" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">Layanan</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-509d0a2 elementor-align-left elementor-mobile-align-center elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="509d0a2" data-element_type="widget" data-widget_type="icon-list.default">
+				<div class="elementor-widget-container">
+			<style>/*! elementor - v3.4.7 - 31-10-2021 */
+.elementor-widget.elementor-icon-list--layout-inline .elementor-widget-container{overflow:hidden}.elementor-widget .elementor-icon-list-items.elementor-inline-items{margin-right:-8px;margin-left:-8px}.elementor-widget .elementor-icon-list-items.elementor-inline-items .elementor-icon-list-item{margin-right:8px;margin-left:8px}.elementor-widget .elementor-icon-list-items.elementor-inline-items .elementor-icon-list-item:after{width:auto;left:auto;right:auto;position:relative;height:100%;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);border-top:0;border-bottom:0;border-right:0;border-left-width:1px;border-style:solid;right:-8px}.elementor-widget .elementor-icon-list-items{list-style-type:none;margin:0;padding:0}.elementor-widget .elementor-icon-list-item{margin:0;padding:0;position:relative}.elementor-widget .elementor-icon-list-item:after{position:absolute;bottom:0;width:100%}.elementor-widget .elementor-icon-list-item,.elementor-widget .elementor-icon-list-item a{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;font-size:inherit}.elementor-widget .elementor-icon-list-icon+.elementor-icon-list-text{-ms-flex-item-align:center;align-self:center;padding-left:5px}.elementor-widget .elementor-icon-list-icon{display:-webkit-box;display:-ms-flexbox;display:flex}.elementor-widget .elementor-icon-list-icon svg{width:var(--e-icon-list-icon-size,1em);height:var(--e-icon-list-icon-size,1em)}.elementor-widget .elementor-icon-list-icon i{width:1.25em;font-size:var(--e-icon-list-icon-size)}.elementor-widget.elementor-widget-icon-list .elementor-icon-list-icon{text-align:var(--e-icon-list-icon-align)}.elementor-widget.elementor-widget-icon-list .elementor-icon-list-icon svg{margin:var(--e-icon-list-icon-margin,0 calc(var(--e-icon-list-icon-size, 1em) * .25) 0 0)}.elementor-widget.elementor-list-item-link-full_width a{width:100%}.elementor-widget.elementor-align-center .elementor-icon-list-item,.elementor-widget.elementor-align-center .elementor-icon-list-item a{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.elementor-widget.elementor-align-center .elementor-icon-list-item:after{margin:auto}.elementor-widget.elementor-align-center .elementor-inline-items{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.elementor-widget.elementor-align-left .elementor-icon-list-item,.elementor-widget.elementor-align-left .elementor-icon-list-item a{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;text-align:left}.elementor-widget.elementor-align-left .elementor-inline-items{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start}.elementor-widget.elementor-align-right .elementor-icon-list-item,.elementor-widget.elementor-align-right .elementor-icon-list-item a{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;text-align:right}.elementor-widget.elementor-align-right .elementor-icon-list-items{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end}.elementor-widget:not(.elementor-align-right) .elementor-icon-list-item:after{left:0}.elementor-widget:not(.elementor-align-left) .elementor-icon-list-item:after{right:0}@media (max-width:1024px){.elementor-widget.elementor-tablet-align-center .elementor-icon-list-item,.elementor-widget.elementor-tablet-align-center .elementor-icon-list-item a,.elementor-widget.elementor-tablet-align-center .elementor-icon-list-items{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.elementor-widget.elementor-tablet-align-center .elementor-icon-list-item:after{margin:auto}.elementor-widget.elementor-tablet-align-left .elementor-icon-list-items{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start}.elementor-widget.elementor-tablet-align-left .elementor-icon-list-item,.elementor-widget.elementor-tablet-align-left .elementor-icon-list-item a{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;text-align:left}.elementor-widget.elementor-tablet-align-right .elementor-icon-list-items{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end}.elementor-widget.elementor-tablet-align-right .elementor-icon-list-item,.elementor-widget.elementor-tablet-align-right .elementor-icon-list-item a{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;text-align:right}.elementor-widget:not(.elementor-tablet-align-right) .elementor-icon-list-item:after{left:0}.elementor-widget:not(.elementor-tablet-align-left) .elementor-icon-list-item:after{right:0}}@media (max-width:767px){.elementor-widget.elementor-mobile-align-center .elementor-icon-list-item,.elementor-widget.elementor-mobile-align-center .elementor-icon-list-item a,.elementor-widget.elementor-mobile-align-center .elementor-icon-list-items{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.elementor-widget.elementor-mobile-align-center .elementor-icon-list-item:after{margin:auto}.elementor-widget.elementor-mobile-align-left .elementor-icon-list-items{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start}.elementor-widget.elementor-mobile-align-left .elementor-icon-list-item,.elementor-widget.elementor-mobile-align-left .elementor-icon-list-item a{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;text-align:left}.elementor-widget.elementor-mobile-align-right .elementor-icon-list-items{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end}.elementor-widget.elementor-mobile-align-right .elementor-icon-list-item,.elementor-widget.elementor-mobile-align-right .elementor-icon-list-item a{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;text-align:right}.elementor-widget:not(.elementor-mobile-align-right) .elementor-icon-list-item:after{left:0}.elementor-widget:not(.elementor-mobile-align-left) .elementor-icon-list-item:after{right:0}}</style>		<ul class="elementor-icon-list-items">
+							<li class="elementor-icon-list-item">
+											<a href="https://www.tataweb.net/web-development/">
+
+												<span class="elementor-icon-list-icon">
+							<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-chevron-right"></use></svg>						</span>
+										<span class="elementor-icon-list-text">Web Development</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="https://www.tataweb.net/content-delivery-network-cdn/">
+
+												<span class="elementor-icon-list-icon">
+							<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-chevron-right"></use></svg>						</span>
+										<span class="elementor-icon-list-text">CDN</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="https://www.tataweb.net/image-compression-optimization/">
+
+												<span class="elementor-icon-list-icon">
+							<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-chevron-right"></use></svg>						</span>
+										<span class="elementor-icon-list-text">Image Compression</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="https://www.tataweb.net/email-hosting-powered-by-mailchannels/">
+
+												<span class="elementor-icon-list-icon">
+							<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-chevron-right"></use></svg>						</span>
+										<span class="elementor-icon-list-text">Email Hosting</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="https://www.tataweb.net/instal-manajemen-vps/">
+
+												<span class="elementor-icon-list-icon">
+							<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-chevron-right"></use></svg>						</span>
+										<span class="elementor-icon-list-text">Instal & Manajemen VPS</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="https://www.tataweb.net/vpn-privat/">
+
+												<span class="elementor-icon-list-icon">
+							<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-chevron-right"></use></svg>						</span>
+										<span class="elementor-icon-list-text">VPN Privat</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="https://www.tataweb.net/cloud-pbx/">
+
+												<span class="elementor-icon-list-icon">
+							<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-chevron-right"></use></svg>						</span>
+										<span class="elementor-icon-list-text">Cloud PBX</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="https://www.tataweb.net/pfsense/">
+
+												<span class="elementor-icon-list-icon">
+							<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-chevron-right"></use></svg>						</span>
+										<span class="elementor-icon-list-text">pfSense</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="https://www.tataweb.net/thin-client/">
+
+												<span class="elementor-icon-list-icon">
+							<svg aria-hidden="true" class="e-font-icon-svg"><use xlink:href="#fas-chevron-right"></use></svg>						</span>
+										<span class="elementor-icon-list-text">Thin Client</span>
+											</a>
+									</li>
+						</ul>
+				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-ab82292" data-id="ab82292" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-cf095c7 elementor-widget elementor-widget-theme-site-logo elementor-widget-image" data-id="cf095c7" data-element_type="widget" data-widget_type="theme-site-logo.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.tataweb.net/">
+							<img width="208" height="43" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20208%2043'%3E%3C/svg%3E" class="attachment-full size-full" alt="Tataweb" data-lazy-src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/2020/12/logo-tataweb-new-orange-2-e1620797463430.png"><noscript><img width="208" height="43" src="https://img.tataweb.net/upload/q_75/https://www.tataweb.net/wp-content/uploads/2020/12/logo-tataweb-new-orange-2-e1620797463430.png" class="attachment-full size-full" alt="Tataweb"></noscript>								</a>
+															</div>
+				</div>
+				<div class="elementor-element elementor-element-2fb0dd8 elementor-widget elementor-widget-text-editor" data-id="2fb0dd8" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>Tata Teknologi adalah perusahaan IT yang berlokasi di Surabaya, dan TataWeb adalah divisi web design dan development.</p>
+<p>Kami merupakan startup yang tergabung dengan <strong>OVH Digital Lunchpad Program</strong> dan <strong>AWS Amazon Activate</strong>.</p>						</div>
+				</div>
+				<div class="elementor-element elementor-element-0d2fa6c elementor-widget elementor-widget-heading" data-id="0d2fa6c" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<p class="elementor-heading-title elementor-size-default"><a href="https://www.tataweb.net/privacy-policy/">2021 © TataWeb · Privacy Policy</a></p>		</div>
+				</div>
+					</div>
+		</div>
+							</div>
+		</section>
+				</div>
+		</div>
+		
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><symbol id="fas-caret-down" viewbox="0 0 320 512"><path d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path></symbol><symbol id="fas-compress-arrows-alt" viewbox="0 0 512 512"><path d="M200 288H88c-21.4 0-32.1 25.8-17 41l32.9 31-99.2 99.3c-6.2 6.2-6.2 16.4 0 22.6l25.4 25.4c6.2 6.2 16.4 6.2 22.6 0L152 408l31.1 33c15.1 15.1 40.9 4.4 40.9-17V312c0-13.3-10.7-24-24-24zm112-64h112c21.4 0 32.1-25.9 17-41l-33-31 99.3-99.3c6.2-6.2 6.2-16.4 0-22.6L481.9 4.7c-6.2-6.2-16.4-6.2-22.6 0L360 104l-31.1-33C313.8 55.9 288 66.6 288 88v112c0 13.3 10.7 24 24 24zm96 136l33-31.1c15.1-15.1 4.4-40.9-17-40.9H312c-13.3 0-24 10.7-24 24v112c0 21.4 25.9 32.1 41 17l31-32.9 99.3 99.3c6.2 6.2 16.4 6.2 22.6 0l25.4-25.4c6.2-6.2 6.2-16.4 0-22.6L408 360zM183 71.1L152 104 52.7 4.7c-6.2-6.2-16.4-6.2-22.6 0L4.7 30.1c-6.2 6.2-6.2 16.4 0 22.6L104 152l-33 31.1C55.9 198.2 66.6 224 88 224h112c13.3 0 24-10.7 24-24V88c0-21.3-25.9-32-41-16.9z"></path></symbol><symbol id="fas-images" viewbox="0 0 576 512"><path d="M480 416v16c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V176c0-26.51 21.49-48 48-48h16v208c0 44.112 35.888 80 80 80h336zm96-80V80c0-26.51-21.49-48-48-48H144c-26.51 0-48 21.49-48 48v256c0 26.51 21.49 48 48 48h384c26.51 0 48-21.49 48-48zM256 128c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-96 144l55.515-55.515c4.686-4.686 12.284-4.686 16.971 0L272 256l135.515-135.515c4.686-4.686 12.284-4.686 16.971 0L512 208v112H160v-48z"></path></symbol><symbol id="fas-code" viewbox="0 0 640 512"><path d="M278.9 511.5l-61-17.7c-6.4-1.8-10-8.5-8.2-14.9L346.2 8.7c1.8-6.4 8.5-10 14.9-8.2l61 17.7c6.4 1.8 10 8.5 8.2 14.9L293.8 503.3c-1.9 6.4-8.5 10.1-14.9 8.2zm-114-112.2l43.5-46.4c4.6-4.9 4.3-12.7-.8-17.2L117 256l90.6-79.7c5.1-4.5 5.5-12.3.8-17.2l-43.5-46.4c-4.5-4.8-12.1-5.1-17-.5L3.8 247.2c-5.1 4.7-5.1 12.8 0 17.5l144.1 135.1c4.9 4.6 12.5 4.4 17-.5zm327.2.6l144.1-135.1c5.1-4.7 5.1-12.8 0-17.5L492.1 112.1c-4.8-4.5-12.4-4.3-17 .5L431.6 159c-4.6 4.9-4.3 12.7.8 17.2L523 256l-90.6 79.7c-5.1 4.5-5.5 12.3-.8 17.2l43.5 46.4c4.5 4.9 12.1 5.1 17 .6z"></path></symbol><symbol id="fas-globe-americas" viewbox="0 0 496 512"><path d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm82.29 357.6c-3.9 3.88-7.99 7.95-11.31 11.28-2.99 3-5.1 6.7-6.17 10.71-1.51 5.66-2.73 11.38-4.77 16.87l-17.39 46.85c-13.76 3-28 4.69-42.65 4.69v-27.38c1.69-12.62-7.64-36.26-22.63-51.25-6-6-9.37-14.14-9.37-22.63v-32.01c0-11.64-6.27-22.34-16.46-27.97-14.37-7.95-34.81-19.06-48.81-26.11-11.48-5.78-22.1-13.14-31.65-21.75l-.8-.72a114.792 114.792 0 0 1-18.06-20.74c-9.38-13.77-24.66-36.42-34.59-51.14 20.47-45.5 57.36-82.04 103.2-101.89l24.01 12.01C203.48 89.74 216 82.01 216 70.11v-11.3c7.99-1.29 16.12-2.11 24.39-2.42l28.3 28.3c6.25 6.25 6.25 16.38 0 22.63L264 112l-10.34 10.34c-3.12 3.12-3.12 8.19 0 11.31l4.69 4.69c3.12 3.12 3.12 8.19 0 11.31l-8 8a8.008 8.008 0 0 1-5.66 2.34h-8.99c-2.08 0-4.08.81-5.58 2.27l-9.92 9.65a8.008 8.008 0 0 0-1.58 9.31l15.59 31.19c2.66 5.32-1.21 11.58-7.15 11.58h-5.64c-1.93 0-3.79-.7-5.24-1.96l-9.28-8.06a16.017 16.017 0 0 0-15.55-3.1l-31.17 10.39a11.95 11.95 0 0 0-8.17 11.34c0 4.53 2.56 8.66 6.61 10.69l11.08 5.54c9.41 4.71 19.79 7.16 30.31 7.16s22.59 27.29 32 32h66.75c8.49 0 16.62 3.37 22.63 9.37l13.69 13.69a30.503 30.503 0 0 1 8.93 21.57 46.536 46.536 0 0 1-13.72 32.98zM417 274.25c-5.79-1.45-10.84-5-14.15-9.97l-17.98-26.97a23.97 23.97 0 0 1 0-26.62l19.59-29.38c2.32-3.47 5.5-6.29 9.24-8.15l12.98-6.49C440.2 193.59 448 223.87 448 256c0 8.67-.74 17.16-1.82 25.54L417 274.25z"></path></symbol><symbol id="fab-facebook" viewbox="0 0 512 512"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"></path></symbol><symbol id="fab-twitter" viewbox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path></symbol><symbol id="fab-youtube" viewbox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"></path></symbol><symbol id="fas-chevron-right" viewbox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"></path></symbol></svg><link rel="preload" href="https://www.tataweb.net/wp-content/plugins/elementor/assets/lib/animations/animations.min.css?ver=3.4.7" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="all">
+<script type="text/javascript" id="rocket-browser-checker-js-after">
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+<script type="text/javascript" id="rocket-preload-links-js-extra">
+/* <![CDATA[ */
+var RocketPreloadLinksConfig = {"excludeUris":"\/(.+\/)?feed\/?.+\/?|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/wp-admin\/|\/logout\/|\/wp-login.php","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|php|pdf|html|htm","siteUrl":"https:\/\/www.tataweb.net","onHoverDelay":"100","rateThrottle":"3"};
+/* ]]> */
+</script>
+<script type="text/javascript" id="rocket-preload-links-js-after">
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+</script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-includes/js/wp-embed.min.js?ver=5.8.2" id="wp-embed-js" defer></script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-includes/js/jquery/jquery.min.js?ver=3.6.0" id="jquery-core-js"></script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js" defer></script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-content/plugins/elementor-pro/assets/lib/smartmenus/jquery.smartmenus.min.js?ver=1.0.1" id="smartmenus-js" defer></script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-content/plugins/elementor-pro/assets/js/webpack-pro.runtime.min.js?ver=3.4.1" id="elementor-pro-webpack-runtime-js" defer></script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=3.4.7" id="elementor-webpack-runtime-js" defer></script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=3.4.7" id="elementor-frontend-modules-js" defer></script>
+<script type="text/javascript" id="elementor-pro-frontend-js-before">
+var ElementorProFrontendConfig = {"ajaxurl":"https:\/\/www.tataweb.net\/wp-admin\/admin-ajax.php","nonce":"332dd17587","urls":{"assets":"https:\/\/www.tataweb.net\/wp-content\/plugins\/elementor-pro\/assets\/","rest":"https:\/\/www.tataweb.net\/wp-json\/"},"i18n":{"toc_no_headings_found":"Tidak ada judul yang ditemukan di halaman ini."},"shareButtonsNetworks":{"facebook":{"title":"Facebook","has_counter":true},"twitter":{"title":"Twitter"},"google":{"title":"Google+","has_counter":true},"linkedin":{"title":"LinkedIn","has_counter":true},"pinterest":{"title":"Pinterest","has_counter":true},"reddit":{"title":"Reddit","has_counter":true},"vk":{"title":"VK","has_counter":true},"odnoklassniki":{"title":"OK","has_counter":true},"tumblr":{"title":"Tumblr"},"digg":{"title":"Digg"},"skype":{"title":"Skype"},"stumbleupon":{"title":"StumbleUpon","has_counter":true},"mix":{"title":"Mix"},"telegram":{"title":"Telegram"},"pocket":{"title":"Pocket","has_counter":true},"xing":{"title":"XING","has_counter":true},"whatsapp":{"title":"WhatsApp"},"email":{"title":"Email"},"print":{"title":"Print"}},
+"facebook_sdk":{"lang":"id_ID","app_id":""},"lottie":{"defaultAnimationUrl":"https:\/\/www.tataweb.net\/wp-content\/plugins\/elementor-pro\/modules\/lottie\/assets\/animations\/default.json"}};
+</script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-content/plugins/elementor-pro/assets/js/frontend.min.js?ver=3.4.1" id="elementor-pro-frontend-js" defer></script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-content/plugins/elementor/assets/lib/waypoints/waypoints.min.js?ver=4.0.2" id="elementor-waypoints-js" defer></script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-includes/js/jquery/ui/core.min.js?ver=1.12.1" id="jquery-ui-core-js" defer></script>
+<script type="text/javascript" id="elementor-frontend-js-before">
+var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Bagikan di Facebook","shareOnTwitter":"Bagikan di Twitter","pinIt":"Sematkan","download":"Unduh","downloadImage":"Unduh gambar","fullscreen":"Layar penuh","zoom":"Perbesar","share":"Bagikan","playVideo":"Putar Video","previous":"Sebelumnya","next":"Lanjut","close":"Menutup"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Ponsel","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Ekstra Seluler","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet Ekstra","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Laptop","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Layar lebar","value":2400,"default_value":2400,"direction":"min","is_enabled":false}}},
+"version":"3.4.7","is_static":false,"experimentalFeatures":{"e_dom_optimization":true,"e_optimized_assets_loading":true,"e_optimized_css_loading":true,"e_font_icon_svg":true,"a11y_improvements":true,"landing-pages":true,"form-submissions":true},"urls":{"assets":"https:\/\/www.tataweb.net\/wp-content\/plugins\/elementor\/assets\/"},"settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description"},"post":{"id":3710,"title":"Image%20Compression%20%26%20Optimization%20%E2%80%93%20TataWeb","excerpt":"","featuredImage":false}};
+</script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.4.7" id="elementor-frontend-js" defer></script>
+<script type="text/javascript" src="https://www.tataweb.net/wp-content/plugins/elementor-pro/assets/js/elements-handlers.min.js?ver=3.4.1" id="pro-elements-handlers-js" defer></script>
+<script>window.lazyLoadOptions={elements_selector:"img[data-lazy-src],.rocket-lazyload",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,callback_loaded:function(element){if(element.tagName==="IFRAME"&&element.dataset.rocketLazyload=="fitvidscompatible"){if(element.classList.contains("lazyloaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}};window.addEventListener('LazyLoad::Initialized',function(e){var lazyLoadInstance=e.detail.instance;if(window.MutationObserver){var observer=new MutationObserver(function(mutations){var image_count=0;var iframe_count=0;var rocketlazy_count=0;mutations.forEach(function(mutation){for(i=0;i<mutation.addedNodes.length;i++){if(typeof mutation.addedNodes[i].getElementsByTagName!=='function'){continue}
+if(typeof mutation.addedNodes[i].getElementsByClassName!=='function'){continue}
+images=mutation.addedNodes[i].getElementsByTagName('img');is_image=mutation.addedNodes[i].tagName=="IMG";iframes=mutation.addedNodes[i].getElementsByTagName('iframe');is_iframe=mutation.addedNodes[i].tagName=="IFRAME";rocket_lazy=mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');image_count+=images.length;iframe_count+=iframes.length;rocketlazy_count+=rocket_lazy.length;if(is_image){image_count+=1}
+if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="https://www.tataweb.net/wp-content/plugins/wp-rocket/assets/js/lazyload/16.1/lazyload.min.js"></script>
+<script type="rocketlazyloadscript">"use strict";var wprRemoveCPCSS=function wprRemoveCPCSS(){var elem;document.querySelector('link[data-rocket-async="style"][rel="preload"]')?setTimeout(wprRemoveCPCSS,200):(elem=document.getElementById("rocket-critical-css"))&&"remove"in elem&&elem.remove()};window.addEventListener?window.addEventListener("load",wprRemoveCPCSS):window.attachEvent&&window.attachEvent("onload",wprRemoveCPCSS);</script><script>class RocketElementorAnimation{constructor(){this.deviceMode=document.createElement("span"),this.deviceMode.id="elementor-device-mode",this.deviceMode.setAttribute("class","elementor-screen-only"),document.body.appendChild(this.deviceMode)}_detectAnimations(){let t=getComputedStyle(this.deviceMode,":after").content.replace(/"/g,"");this.animationSettingKeys=this._listAnimationSettingsKeys(t),document.querySelectorAll(".elementor-invisible[data-settings]").forEach(t=>{const e=t.getBoundingClientRect();if(e.bottom>=0&&e.top<=window.innerHeight)try{this._animateElement(t)}catch(t){}})}_animateElement(t){const e=JSON.parse(t.dataset.settings),i=e._animation_delay||e.animation_delay||0,n=e[this.animationSettingKeys.find(t=>e[t])];if("none"===n)return void t.classList.remove("elementor-invisible");t.classList.remove(n),this.currentAnimation&&t.classList.remove(this.currentAnimation),this.currentAnimation=n;let s=setTimeout(()=>{t.classList.remove("elementor-invisible"),t.classList.add("animated",n),this._removeAnimationSettings(t,e)},i);window.addEventListener("rocket-startLoading",function(){clearTimeout(s)})}_listAnimationSettingsKeys(t="mobile"){const e=[""];switch(t){case"mobile":e.unshift("_mobile");case"tablet":e.unshift("_tablet");case"desktop":e.unshift("_desktop")}const i=[];return["animation","_animation"].forEach(t=>{e.forEach(e=>{i.push(t+e)})}),i}_removeAnimationSettings(t,e){this._listAnimationSettingsKeys().forEach(t=>delete e[t]),t.dataset.settings=JSON.stringify(e)}static run(){const t=new RocketElementorAnimation;requestAnimationFrame(t._detectAnimations.bind(t))}}document.addEventListener("DOMContentLoaded",RocketElementorAnimation.run);</script><noscript>
+<link rel="stylesheet" id="wp-block-library-css" href="https://www.tataweb.net/wp-includes/css/dist/block-library/style.min.css?ver=5.8.2" type="text/css" media="all">
+<link data-minify="1" rel="stylesheet" id="trp-language-switcher-style-css" href="https://www.tataweb.net/wp-content/cache/min/1/wp-content/plugins/translatepress-multilingual/assets/css/trp-language-switcher.css?ver=1637590815" type="text/css" media="all">
+<link rel="stylesheet" id="hello-elementor-css" href="https://www.tataweb.net/wp-content/themes/hello-elementor/style.min.css?ver=2.4.1" type="text/css" media="all">
+<link rel="stylesheet" id="hello-elementor-theme-style-css" href="https://www.tataweb.net/wp-content/themes/hello-elementor/theme.min.css?ver=2.4.1" type="text/css" media="all">
+<link rel="stylesheet" id="elementor-frontend-css" href="https://www.tataweb.net/wp-content/plugins/elementor/assets/css/frontend-lite.min.css?ver=3.4.7" type="text/css" media="all">
+<link data-minify="1" rel="stylesheet" id="elementor-post-144-css" href="https://www.tataweb.net/wp-content/cache/min/1/wp-content/uploads/elementor/css/post-144.css?ver=1637592215" type="text/css" media="all">
+<link rel="stylesheet" id="elementor-pro-css" href="https://www.tataweb.net/wp-content/plugins/elementor-pro/assets/css/frontend-lite.min.css?ver=3.4.1" type="text/css" media="all">
+<link data-minify="1" rel="stylesheet" id="elementor-post-3710-css" href="https://www.tataweb.net/wp-content/cache/min/1/wp-content/uploads/elementor/css/post-3710.css?ver=1637590841" type="text/css" media="all">
+<link data-minify="1" rel="stylesheet" id="elementor-post-2607-css" href="https://www.tataweb.net/wp-content/cache/min/1/wp-content/uploads/elementor/css/post-2607.css?ver=1637592215" type="text/css" media="all">
+<link data-minify="1" rel="stylesheet" id="elementor-post-3055-css" href="https://www.tataweb.net/wp-content/cache/min/1/wp-content/uploads/elementor/css/post-3055.css?ver=1637592215" type="text/css" media="all">
+<link rel="stylesheet" id="google-fonts-1-css" href="https://fonts.googleapis.com/css?family=Montserrat%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CPlayfair+Display%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&#038;display=swap&#038;ver=5.8.2" type="text/css" media="all">
+<link rel="stylesheet" href="https://www.tataweb.net/wp-content/plugins/elementor-pro/assets/css/widget-nav-menu.min.css">
+<link rel="stylesheet" id="e-animations-css" href="https://www.tataweb.net/wp-content/plugins/elementor/assets/lib/animations/animations.min.css?ver=3.4.7" type="text/css" media="all">
+</noscript>
+</body>
+
+
+<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me -->
+</html>
